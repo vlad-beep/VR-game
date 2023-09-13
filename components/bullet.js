@@ -86,7 +86,7 @@ function startGame() {
           target.setAttribute('position', {
             x: col * spacing - (targetsPerRow / 2) * spacing,
             y: row * spacing, // Располагаем в плоскости XY
-            z: -10, // Позиция по Z будет равна 0
+            z: -15, // Позиция по Z будет равна 0
           });
           target.setAttribute('id', 'target' + targetCounter); // Уникальный id для каждой мишени
           target.setAttribute('data-raycastable', '');
