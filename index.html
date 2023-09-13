@@ -3,7 +3,7 @@
 <head>
     <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
-    <script src="/components/bullet.js"></script>
+    <script src="components/bullet.js"></script>
 </head>
 
 <body>
@@ -16,20 +16,20 @@
 
         <a-light type="directional" intensity="1" distance="15" decay="3" position="12 8.3 12" color="white"></a-light>
         <a-assets>
-            <a-asset-item id="targetModel" src="/assets/3DModels/abstract_shape.glb"></a-asset-item>
-            <a-asset-item id="hpModel" src="/assets/3DModels/crystal_heart.glb"></a-asset-item>
-            <a-asset-item id="cockpitModel" src="/assets/3DModels/scene.gltf"></a-asset-item>
+            <a-asset-item id="targetModel" src="assets/3DModels/abstract_shape.glb"></a-asset-item>
+            <a-asset-item id="hpModel" src="assets/3DModels/crystal_heart.glb"></a-asset-item>
+            <a-asset-item id="cockpitModel" src="assets/3DModels/scene.gltf"></a-asset-item>
         </a-assets>
         <!-- <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane> -->
-        <a-sky src="/assets/images/SpaceArt.jpg" radius="20"></a-sky>
+        <a-sky src="assets/images/SpaceArt.jpg" radius="20"></a-sky>
         <a-camera raycaster="objects: [data-raycastable]">
             <a-entity gltf-model='#cockpitModel' rotation="0 180 0" position="0 -1 -0.09"></a-entity>
             <a-entity cursor="fuse: true;" material="color: black; shader: flat" position="0 0 -1"
                 geometry="primitive: ring" scale="0.01 0.01 0.01"></a-entity>
 
-            <a-sound id="laserShootSound" src="/assets/sound/laserSound.mp3" autoplay="false" volume="1"
+            <a-sound id="laserShootSound" src="assets/sound/laserSound.mp3" autoplay="false" volume="1"
                 loop="false"></a-sound>
-            <a-sound id="laserReloadSound" src="/assets/sound/povtoryayuschiysya-elektronnyiy-neopoznannyiy-signal.mp3"
+            <a-sound id="laserReloadSound" src="assets/sound/povtoryayuschiysya-elektronnyiy-neopoznannyiy-signal.mp3"
                 autoplay="false" volume="1" loop="false"></a-sound>
         </a-camera>
 
