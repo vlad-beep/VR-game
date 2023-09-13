@@ -1,119 +1,40 @@
 <html>
 
 <head>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script>
-
-        AFRAME.registerComponent('bullet', {
-            schema: {
-                velocity: { type: 'vec3', default: { x: 0, y: 0, z: -5 } }
-            },
-
-            init: function () {
-                this.el.addEventListener('componentchanged', (event) => {
-                    if (event.detail.name === 'position') {
-                        this.checkCollision();
-                    }
-                });
-            },
-
-            tick: function () {
-                const position = this.el.getAttribute('position');
-                const velocity = this.data.velocity;
-                position.x += velocity.x * 0.016;
-                position.y += velocity.y * 0.016;
-                position.z += velocity.z * 0.016;
-                this.el.setAttribute('position', position);
-            },
-
-            checkCollision: function () {
-                // Ничего не делаем здесь, обработка столкновений в логике ниже
-            }
-        });
-
-        document.addEventListener('keydown', function (event) {
-            if (event.key === ' ') { // Проверяем, была ли нажата клавиша пробела
-                const camera = document.querySelector('a-camera'); // Получаем элемент камеры
-                const cursor = document.querySelector('[cursor]'); // Получаем элемент курсора
-                const velocity = 10;
-                // Получаем позиции камеры и курсора
-                const cameraPosition = new THREE.Vector3();
-                camera.object3D.getWorldPosition(cameraPosition);
-
-                const cursorPosition = new THREE.Vector3();
-                cursor.object3D.getWorldPosition(cursorPosition);
-
-                // Вычисляем вектор от камеры к курсору
-                const direction = new THREE.Vector3();
-                direction.subVectors(cursorPosition, cameraPosition).normalize(); // Нормализуем вектор
-
-                // Создаем красную сферу (пулю) и задаем ей начальную позицию и цвет
-                const bullet = document.createElement('a-sphere');
-                bullet.setAttribute('radius', '0.05');
-                bullet.setAttribute('position', cameraPosition); // Начальная позиция пули равна позиции камеры
-                bullet.setAttribute('color', 'red');
-                bullet.setAttribute('bullet', '');
-                bullet.setAttribute('raycaster', {
-                    direction: direction,
-                    far: 1, // Увеличьте значение far по вашему усмотрению
-                    interval: 50, // Увеличьте интервал проверки
-                });
-
-                // Устанавливаем направление пули
-                bullet.setAttribute('bullet', `velocity: ${direction.x * velocity} ${direction.y * velocity} ${direction.z * velocity}`);
-
-                // Добавляем пулю на сцену
-                const scene = document.querySelector('a-scene');
-                scene.appendChild(bullet);
-                const timer = setTimeout(() => {
-                    scene.removeChild(bullet); // Удаляем пулю
-                }, 3000);
-
-
-                // Используем raycaster для обнаружения столкновения с сферой-мишенью
-                const raycaster = new THREE.Raycaster(cameraPosition, direction);
-                const intersects = raycaster.intersectObject(scene.object3D, true);
-
-                if (intersects.length > 0.1) {
-                    const target = intersects[0].object.el;
-                    if (target.id === 'target') {
-                        const target = document.querySelector('#target');
-                        const targetPosition = new THREE.Vector3();
-                        target.object3D.getWorldPosition(targetPosition);
-                        const distance = cameraPosition.distanceTo(targetPosition);
-
-                        // Вычисляем время, через которое мишень исчезнет
-                        const timeToDisappear = distance / velocity;
-                        console.log('Попадание!');
-
-                        // Задержка перед удалением мишени на основе вычисленного времени
-                        setTimeout(() => {
-                            scene.removeChild(target); // Удаляем сферу-мишень
-                            scene.removeChild(bullet);
-                        }, timeToDisappear * 1000); // Умножаем на 1000, чтобы перевести в миллисекунды
-                    }
-                }
-            }
-        });
-    </script>
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
+    <script src="/components/bullet.js"></script>
 </head>
 
 <body>
     <a-scene>
+        <!-- Left Red Box -->
+        <a-gui-button id="startButton" width="2" height="0.5" value="START GAME" position="0 2 -5"
+            active-color="#8E24AA" background-color="#4A148C" hover-color="#6A1B9A" border-color="#F3E5F5"
+            font-color="#F3E5F5" onClick="startGame()"></a-gui-button>
+
+
+        <a-light type="directional" intensity="1" distance="15" decay="3" position="12 8.3 12" color="white"></a-light>
         <a-assets>
-            <a-asset-item id="targetModel" src="/assets/textures/abstract_shape.glb"></a-asset-item>
-            <a-asset-item id="impactModel" src="/assets/textures/firelings.glb"></a-asset-item>
-            <a-mixin id="snow-particle" particle-system="preset: snow; particleCount: 1000;"></a-mixin>
+            <a-asset-item id="targetModel" src="/assets/3DModels/abstract_shape.glb"></a-asset-item>
+            <a-asset-item id="hpModel" src="/assets/3DModels/crystal_heart.glb"></a-asset-item>
+            <a-asset-item id="cockpitModel" src="/assets/3DModels/scene.gltf"></a-asset-item>
         </a-assets>
-        <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
-        <a-sky src="/assets/images/BackGround.jpg" radius="20"></a-sky>
+        <!-- <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane> -->
+        <a-sky src="/assets/images/SpaceArt.jpg" radius="20"></a-sky>
         <a-camera raycaster="objects: [data-raycastable]">
-            <a-cursor></a-cursor>
+            <a-entity gltf-model='#cockpitModel' rotation="0 180 0" position="0 -1 -0.09"></a-entity>
+            <a-entity cursor="fuse: true;" material="color: black; shader: flat" position="0 0 -1"
+                geometry="primitive: ring" scale="0.01 0.01 0.01"></a-entity>
+
+            <a-sound id="laserShootSound" src="/assets/sound/laserSound.mp3" autoplay="false" volume="1"
+                loop="false"></a-sound>
+            <a-sound id="laserReloadSound" src="/assets/sound/povtoryayuschiysya-elektronnyiy-neopoznannyiy-signal.mp3"
+                autoplay="false" volume="1" loop="false"></a-sound>
         </a-camera>
-        <a-entity explosion></a-entity>
-        <a-entity id="target" position="0 5 -14" scale="10 10 10" shadow="cast: true" gltf-model="#targetModel"
-            data-raycastable
-            animation="property: rotation; to: 0 360 0; dur: 10000; easing: linear; loop: true;"></a-entity>
+
+
+
     </a-scene>
 </body>
 
