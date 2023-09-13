@@ -4,6 +4,11 @@
     <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
     <script src="components/bullet.js"></script>
+    <script> function playSound() {
+            var sound = document.querySelector('#Soundtrack');
+            sound.play();
+            startGame();
+        }</script>
 </head>
 
 <body>
@@ -11,7 +16,7 @@
         <!-- Left Red Box -->
         <a-gui-button id="startButton" width="2" height="0.5" value="START GAME" position="0 2 -5"
             active-color="#8E24AA" background-color="#4A148C" hover-color="#6A1B9A" border-color="#F3E5F5"
-            font-color="#F3E5F5" onClick="startGame()"></a-gui-button>
+            font-color="#F3E5F5" onClick="playSound()"></a-gui-button>
 
 
         <a-light type="directional" intensity="1" distance="15" decay="3" position="12 8.3 12" color="white"></a-light>
@@ -31,6 +36,8 @@
                 loop="false"></a-sound>
             <a-sound id="laserReloadSound" src="assets/sound/povtoryayuschiysya-elektronnyiy-neopoznannyiy-signal.mp3"
                 autoplay="false" volume="1" loop="false"></a-sound>
+            <a-sound id="Soundtrack" src="assets/sound/hotline_miami_04. M.O.O.N - Crystals.mp3" autoplay="true"
+                volume="1" loop="false"></a-sound>
         </a-camera>
 
 
