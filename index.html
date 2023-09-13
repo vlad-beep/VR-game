@@ -5,9 +5,9 @@
     <script src="https://cdn.rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
     <script src="components/bullet.js"></script>
     <script> function playSound() {
-            var sound = document.querySelector('#Soundtrack');
-            sound.play();
             startGame();
+            let Soundtrack = document.querySelector('#Soundtrack');
+            Soundtrack.components.sound.playSound();
         }</script>
 </head>
 
@@ -26,8 +26,9 @@
             <a-asset-item id="cockpitModel" src="assets/3DModels/scene.gltf"></a-asset-item>
         </a-assets>
         <!-- <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane> -->
-        <a-sky src="assets/images/SpaceArt.jpg" radius="20"></a-sky>
-        <a-camera raycaster="objects: [data-raycastable]">
+        <a-sky src="assets/images/SpaceArt.jpg" radius="20"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 150000 easing: linear"></a-sky>
+        <a-camera raycaster="objects: [data-raycastable]" fov="90">
             <a-entity gltf-model='#cockpitModel' rotation="0 180 0" position="0 -1 -0.09"></a-entity>
             <a-entity cursor="fuse: true;" material="color: black; shader: flat" position="0 0 -1"
                 geometry="primitive: ring" scale="0.01 0.01 0.01"></a-entity>
@@ -36,7 +37,7 @@
                 loop="false"></a-sound>
             <a-sound id="laserReloadSound" src="assets/sound/povtoryayuschiysya-elektronnyiy-neopoznannyiy-signal.mp3"
                 autoplay="false" volume="1" loop="false"></a-sound>
-            <a-sound id="Soundtrack" src="assets/sound/hotline_miami_04. M.O.O.N - Crystals.mp3" autoplay="true"
+            <a-sound id="Soundtrack" src="assets/sound/hotline_miami_04. M.O.O.N - Crystals.mp3" autoplay="false"
                 volume="1" loop="false"></a-sound>
         </a-camera>
 
