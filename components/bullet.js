@@ -130,6 +130,7 @@ function startGame() {
 
     const laserShootSound = document.querySelector('#laserShootSound');
     const laserReloadSound = document.querySelector('#laserReloadSound');
+    const impactSound = document.querySelector('#impactSound');
 
     const turret = document.querySelector('#shootingSpotBlue'); // Получаем элемент турели
     const turretPosition = new THREE.Vector3(); // Получаем текущую позицию турели
@@ -192,6 +193,7 @@ function startGame() {
 
         // Задержка перед удалением мишени на основе вычисленного времени
         setTimeout(() => {
+          impactSound.components.sound.playSound();
           scene.removeChild(target); // Удаляем сферу-мишень
           scene.removeChild(bullet);
         }, timeToDisappear * 1000); // Умножаем на 1000, чтобы перевести в миллисекунды
