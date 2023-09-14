@@ -150,7 +150,7 @@ function startGame() {
     console.log(direction);
     // Создаем красную сферу (пулю) и задаем ей начальную позицию и цвет
     const bullet = document.createElement('a-sphere');
-    bullet.setAttribute('radius', '0.03');
+    bullet.setAttribute('radius', '0.05');
     bullet.setAttribute('position', turretPosition); // Начальная позиция пули равна позиции камеры
     bullet.setAttribute('color', 'red');
     bullet.setAttribute('bullet', '');
@@ -208,7 +208,7 @@ function startGame() {
         setTimeout(() => {
           scene.removeChild(target); // Удаляем сферу-мишень
           scene.removeChild(bullet);
-        }, timeToDisappear * 1500); // Умножаем на 1000, чтобы перевести в миллисекунды
+        }, timeToDisappear * 3000); // Умножаем на 1000, чтобы перевести в миллисекунды
       }
     }
     const timer = setTimeout(() => {
@@ -218,7 +218,7 @@ function startGame() {
     }, 3000);
   }
 
-  setInterval(autoShooting, 1000);
+  setInterval(autoShooting, 1500);
   console.log('Игра началась!');
   scene.removeChild(startButton);
 }
