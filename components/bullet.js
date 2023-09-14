@@ -123,7 +123,8 @@ function startGame() {
       // Ничего не делаем здесь, обработка столкновений в логике ниже
     },
   });
-
+  let hitCounter = 0;
+  let attributeNumber = 0;
   function autoShooting() {
     const camera = document.querySelector('a-camera'); // Получаем элемент камеры
     const cursor = document.querySelector('[cursor]'); // Получаем элемент курсора
@@ -150,21 +151,19 @@ function startGame() {
     // Вычисляем вектор от камеры к курсору
     const direction = new THREE.Vector3();
     direction.subVectors(cursorPosition, cameraPosition).normalize(); // Нормализуем вектор
-    console.log(direction);
     // Создаем красную сферу (пулю) и задаем ей начальную позицию и цвет
     const bullet = document.createElement('a-sphere');
     bullet.setAttribute('radius', '0.05');
     bullet.setAttribute('position', turretPosition); // Начальная позиция пули равна позиции камеры
-    bullet.setAttribute('color', 'red');
+    bullet.setAttribute('color', '#00FFFF');
     bullet.setAttribute('bullet', '');
     bullet.setAttribute('raycaster', {
       direction: direction,
       far: 1, // Увеличьте значение far по вашему усмотрению
       interval: 50, // Увеличьте интервал проверки
     });
-
-    // Устанавливаем направление пули
     bullet.setAttribute(
+      // Устанавливаем направление пули
       'bullet',
       `velocity: ${direction.x * velocity} ${direction.y * velocity} ${direction.z * velocity}`,
     );
@@ -172,6 +171,7 @@ function startGame() {
     // Добавляем пулю на сцену
     const scene = document.querySelector('a-scene');
     scene.appendChild(bullet);
+
     laserShootSound.components.sound.playSound();
     laserReloadSound.components.sound.playSound();
 
@@ -183,12 +183,38 @@ function startGame() {
       const target = intersects[0].object.el;
 
       if (target.id.startsWith('target')) {
+        hitCounter++;
+        if (hitCounter < 11) {
+          attributeNumber = `#number${hitCounter}`;
+        } else {
+          hitCounter = 0;
+        }
+        const number = document.createElement('a-entity');
         const targetId = target.id;
         const targetEntity = document.querySelector(`#${targetId}`);
         const targetPosition = new THREE.Vector3();
         target.object3D.getWorldPosition(targetPosition);
         const distance = cameraPosition.distanceTo(targetPosition);
 
+        number.setAttribute('scale', '1 1 1');
+        number.setAttribute('position', targetPosition); // Начальная позиция пули равна позиции камеры
+        number.setAttribute('gltf-model', attributeNumber);
+        number.setAttribute('animation__rotation', {
+          property: 'rotation',
+          to: '0 360 0',
+          dur: 1000,
+          loop: true,
+        });
+        number.setAttribute('animation__move', {
+          property: 'position',
+          to: `${targetPosition.x} ${targetPosition.y + 17} ${targetPosition.z}`,
+          dur: 1000,
+          loop: false,
+        });
+
+        setTimeout(() => {
+          scene.removeChild(number);
+        }, 2000);
         // Вычисляем время, через которое мишень исчезнет
         const timeToDisappear = distance / velocity;
         console.log('Попадание!');
@@ -198,6 +224,7 @@ function startGame() {
           impactSound.components.sound.playSound();
           scene.removeChild(target); // Удаляем сферу-мишень
           scene.removeChild(bullet);
+          scene.appendChild(number);
         }, timeToDisappear * 1000); // Умножаем на 1000, чтобы перевести в миллисекунды
       } else if (target.id.startsWith('hp')) {
         const targetId = target.id;
@@ -213,8 +240,9 @@ function startGame() {
           hpSound.components.sound.playSound();
           scene.removeChild(target); // Удаляем сферу-мишень
           scene.removeChild(bullet);
-        }, timeToDisappear * 3000); // Умножаем на 1000, чтобы перевести в миллисекунды
+        }, timeToDisappear * 1000); // Умножаем на 1000, чтобы перевести в миллисекунды
       } else {
+        hitCounter = 0;
         missSound.components.sound.playSound();
         console.log('Промах');
       }
