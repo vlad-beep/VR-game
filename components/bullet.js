@@ -127,8 +127,14 @@ function startGame() {
   function autoShooting() {
     const camera = document.querySelector('a-camera'); // Получаем элемент камеры
     const cursor = document.querySelector('[cursor]'); // Получаем элемент курсора
+
     const laserShootSound = document.querySelector('#laserShootSound');
     const laserReloadSound = document.querySelector('#laserReloadSound');
+
+    const turret = document.querySelector('#shootingSpotBlue'); // Получаем элемент турели
+    const turretPosition = new THREE.Vector3(); // Получаем текущую позицию турели
+
+    turret.object3D.getWorldPosition(turretPosition);
 
     const velocity = 15;
     // Получаем позиции камеры и курсора
@@ -141,11 +147,11 @@ function startGame() {
     // Вычисляем вектор от камеры к курсору
     const direction = new THREE.Vector3();
     direction.subVectors(cursorPosition, cameraPosition).normalize(); // Нормализуем вектор
-
+    console.log(direction);
     // Создаем красную сферу (пулю) и задаем ей начальную позицию и цвет
     const bullet = document.createElement('a-sphere');
-    bullet.setAttribute('radius', '0.05');
-    bullet.setAttribute('position', cameraPosition); // Начальная позиция пули равна позиции камеры
+    bullet.setAttribute('radius', '0.03');
+    bullet.setAttribute('position', turretPosition); // Начальная позиция пули равна позиции камеры
     bullet.setAttribute('color', 'red');
     bullet.setAttribute('bullet', '');
     bullet.setAttribute('raycaster', {
@@ -202,7 +208,7 @@ function startGame() {
         setTimeout(() => {
           scene.removeChild(target); // Удаляем сферу-мишень
           scene.removeChild(bullet);
-        }, timeToDisappear * 1000); // Умножаем на 1000, чтобы перевести в миллисекунды
+        }, timeToDisappear * 1500); // Умножаем на 1000, чтобы перевести в миллисекунды
       }
     }
     const timer = setTimeout(() => {
@@ -212,7 +218,7 @@ function startGame() {
     }, 3000);
   }
 
-  setInterval(autoShooting, 2000);
+  setInterval(autoShooting, 1000);
   console.log('Игра началась!');
   scene.removeChild(startButton);
 }

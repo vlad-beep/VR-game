@@ -19,19 +19,23 @@
             font-color="#F3E5F5" onClick="playSound()"></a-gui-button>
 
 
-        <a-light type="directional" intensity="1" distance="15" decay="3" position="12 8.3 12" color="white"></a-light>
+        <a-light type="directional" intensity="3" distance="15" decay="3" position="12 8.3 12" color="white"></a-light>
         <a-assets>
             <a-asset-item id="targetModel" src="assets/3DModels/abstract_shape.glb"></a-asset-item>
             <a-asset-item id="hpModel" src="assets/3DModels/crystal_heart.glb"></a-asset-item>
-            <a-asset-item id="cockpitModel" src="assets/3DModels/scene.gltf"></a-asset-item>
+            <a-asset-item id="cockpitModel" src="assets/3DModels/cockpit/scene.gltf"></a-asset-item>
+            <a-asset-item id="turret" src="assets/3DModels/turret/turret.gltf"></a-asset-item>
         </a-assets>
-        <!-- <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane> -->
         <a-sky src="assets/images/SpaceArt.jpg" radius="20"
             animation="property: rotation; to: 0 360 0; loop: true; dur: 150000 easing: linear"></a-sky>
-        <a-camera raycaster="objects: [data-raycastable]" fov="90">
+        <a-camera raycaster="objects: [data-raycastable]" fov="100">
             <a-entity gltf-model='#cockpitModel' rotation="0 180 0" position="0 -1 -0.09"></a-entity>
-            <a-entity cursor="fuse: true;" material="color: black; shader: flat" position="0 0 -1"
-                geometry="primitive: ring" scale="0.01 0.01 0.01"></a-entity>
+            <a-entity id="turretBlue" gltf-model='#turret' scale="0.1 0.1 0.1" position="0.5 -0.4 0.18"
+                rotation="-5 190 90" animation-mixer>
+                <a-sphere id="shootingSpotBlue" color="red" scale="0.1 0.1 0.1"
+                    position="-0.26 3.072 10.9"></a-sphere></a-entity>
+            <a-entity cursor="fuse: true;" material="color: black; shader: flat" position="0 0 -3"
+                geometry="primitive: ring" scale="0.05 0.05 0.05"></a-entity>
 
             <a-sound id="laserShootSound" src="assets/sound/laserSound.mp3" autoplay="false" volume="1"
                 loop="false"></a-sound>
@@ -40,8 +44,6 @@
             <a-sound id="Soundtrack" src="assets/sound/hotline_miami_04. M.O.O.N - Crystals.mp3" autoplay="false"
                 volume="1" loop="false"></a-sound>
         </a-camera>
-
-
 
     </a-scene>
 </body>
