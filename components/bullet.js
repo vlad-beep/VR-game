@@ -24,7 +24,7 @@ function startGame() {
         // Добавляем анимацию увеличения масштаба
         hp.setAttribute('animation__scale', {
           property: 'scale',
-          to: '0.5 0.5 0.5',
+          to: '0.6 0.6 0.6',
           dur: 1000,
           easing: 'easeOutElastic',
         });
