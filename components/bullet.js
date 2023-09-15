@@ -183,11 +183,12 @@ function startGame() {
       const target = intersects[0].object.el;
 
       if (target.id.startsWith('target')) {
-        hitCounter++;
-        if (hitCounter < 11) {
+        if (hitCounter <= 9) {
+          hitCounter++;
           attributeNumber = `#number${hitCounter}`;
         } else {
-          hitCounter = 0;
+          hitCounter = 1;
+          attributeNumber = `#number${hitCounter}`;
         }
         const number = document.createElement('a-entity');
         const targetId = target.id;

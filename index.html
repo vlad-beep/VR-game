@@ -4,7 +4,7 @@
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
     <script src="components/bullet.js"></script>
-    <script> function playSound() {
+    <script> function playGameSound() {
             startGame();
             let Soundtrack = document.querySelector('#Soundtrack');
             Soundtrack.components.sound.playSound();
@@ -13,13 +13,9 @@
 
 <body>
     <a-scene>
-        <!-- Left Red Box -->
         <a-gui-button id="startButton" width="2" height="0.5" value="START GAME" position="0 2 -5"
             active-color="#8E24AA" background-color="#4A148C" hover-color="#6A1B9A" border-color="#F3E5F5"
-            font-color="#F3E5F5" onClick="playSound()"></a-gui-button>
-
-
-        <a-light type="directional" intensity="3" distance="15" decay="3" position="12 8.3 12" color="white"></a-light>
+            font-color="#F3E5F5" onClick="playGameSound()"></a-gui-button>
         <a-assets>
             <a-asset-item id="targetModel" src="assets/3DModels/abstract_shape.glb"></a-asset-item>
             <a-asset-item id="hpModel" src="assets/3DModels/crystal_heart.glb"></a-asset-item>
@@ -36,19 +32,10 @@
             <a-asset-item id="number9" src="assets/3DModels/number_9/scene.gltf"></a-asset-item>
             <a-asset-item id="number10" src="assets/3DModels/number_10/scene.gltf"></a-asset-item>
         </a-assets>
+        <a-light type="directional" intensity="3" distance="15" decay="3" position="12 8.3 12" color="white"></a-light>
         <a-sky src="assets/images/SpaceArt.jpg" radius="20"
             animation="property: rotation; to: 0 360 0; loop: true; dur: 150000 easing: linear"></a-sky>
         <a-camera raycaster="objects: [data-raycastable]" fov="100">
-            <a-entity gltf-model='#cockpitModel' rotation="0 180 0" position="0 -1 -0.09"></a-entity>
-            <a-entity id="turretBlue" gltf-model='#turret' scale="0.1 0.1 0.1" position="0.5 -0.4 0.18"
-                rotation="-5 190 90" animation-mixer>
-                <a-sphere id="shootingSpotBlue" color="red" scale="0.1 0.1 0.1"
-                    position="-0.26 3.072 10.9"></a-sphere></a-entity>
-            <a-entity cursor="fuse: true;" material="color:#00FF00; shader: flat" position="0 0 -3"
-                geometry="primitive: ring" scale="0.04 0.04 0.04">
-            </a-entity>
-            <a-entity geometry="primitive: ring" scale="0.06 0.06 0.06" position="0 0 -3"
-                material="color: black; shader: flat"></a-entity>
             <a-sound id="laserShootSound" src="assets/sound/laserSound.mp3" autoplay="false" volume="1"
                 loop="false"></a-sound>
             <a-sound id="laserReloadSound" src="assets/sound/povtoryayuschiysya-elektronnyiy-neopoznannyiy-signal.mp3"
@@ -60,8 +47,17 @@
             <a-sound id="missSound" src="assets/sound/vyibor-nujnoy-igrovoy-kategorii.mp3" autoplay="false" volume="3"
                 loop="false"></a-sound>
             <a-sound id="hpSound" src="assets/sound/hpAdded.mp3" autoplay="false" volume="1" loop="false"></a-sound>
+            <a-entity gltf-model='#cockpitModel' rotation="0 180 0" position="0 -1 -0.09"></a-entity>
+            <a-entity id="turretBlue" gltf-model='#turret' scale="0.1 0.1 0.1" position="0.5 -0.4 0.18"
+                rotation="-5 190 90" animation-mixer>
+                <a-sphere id="shootingSpotBlue" color="red" scale="0.1 0.1 0.1"
+                    position="-0.26 3.072 10.9"></a-sphere></a-entity>
+            <a-entity cursor="fuse: true;" material="color:#00FF00; shader: flat" position="0 0 -3"
+                geometry="primitive: ring" scale="0.04 0.04 0.04">
+            </a-entity>
+            <a-entity geometry="primitive: ring" scale="0.06 0.06 0.06" position="0 0 -3"
+                material="color: black; shader: flat"></a-entity>
         </a-camera>
-
     </a-scene>
 </body>
 
