@@ -129,8 +129,27 @@ function startGame() {
     },
   });
 
+  function turretrecoil() {
+    const turretModel = document.querySelector('#turretBlue');
+    turretModel.setAttribute('animation__recoil', {
+      property: 'position',
+      to: '0.652 -0.96 -0.587',
+      dur: 150,
+      loop: false,
+    });
+    setTimeout(() => {
+      const turretModel = document.querySelector('#turretBlue');
+      turretModel.setAttribute('animation__recoil', {
+        property: 'position',
+        to: '0.652 -0.967 -0.646',
+        dur: 1500,
+        loop: false,
+      });
+    }, 150);
+  }
+
   function turretAnimation() {
-    //position="0.652 -0.967 -0.646"
+    //position="0.652 -0.96 -0.587"
     const turretSound = document.querySelector('#turretSound');
     turretSound.components.sound.playSound();
     const turretModel = document.querySelector('#turretBlue');
@@ -173,6 +192,7 @@ function startGame() {
     bullet.setAttribute('radius', '0.05');
     bullet.setAttribute('position', turretPosition); // Начальная позиция пули равна позиции камеры
     bullet.setAttribute('color', '#00FFFF');
+    bullet.setAttribute('opacity', '0.7');
     bullet.setAttribute('bullet', '');
     bullet.setAttribute('raycaster', {
       direction: direction,
@@ -188,6 +208,7 @@ function startGame() {
     // Добавляем пулю на сцену
     const scene = document.querySelector('a-scene');
     scene.appendChild(bullet);
+    turretrecoil();
 
     laserShootSound.components.sound.playSound();
     laserReloadSound.components.sound.playSound();

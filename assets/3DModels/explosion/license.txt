@@ -1,0 +1,11 @@
+Model Information:
+* title:	particles "1"
+* source:	https://sketchfab.com/3d-models/particles-1-faabb28f534a4bf3b71d446f41c524a8
+* author:	vicente betoret ferrero (https://sketchfab.com/deathcow)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "particles "1"" (https://sketchfab.com/3d-models/particles-1-faabb28f534a4bf3b71d446f41c524a8) by vicente betoret ferrero (https://sketchfab.com/deathcow) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
