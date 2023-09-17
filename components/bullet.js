@@ -1,7 +1,12 @@
 function startGame() {
   const scene = document.querySelector('a-scene');
+  scene.removeChild(startButton);
   scene.setAttribute('spawn-targets', '');
   scene.setAttribute('spawn-hp', '');
+  turretAnimation();
+  let hitCounter = 0;
+  let attributeNumber = 0;
+  setInterval(autoShooting, 1500);
 
   AFRAME.registerComponent('spawn-hp', {
     init: function () {
@@ -123,8 +128,20 @@ function startGame() {
       // Ничего не делаем здесь, обработка столкновений в логике ниже
     },
   });
-  let hitCounter = 0;
-  let attributeNumber = 0;
+
+  function turretAnimation() {
+    //position="0.652 -0.967 -0.646"
+    const turretSound = document.querySelector('#turretSound');
+    turretSound.components.sound.playSound();
+    const turretModel = document.querySelector('#turretBlue');
+    turretModel.setAttribute('animation__move', {
+      property: 'position',
+      to: '0.652 -0.967 -0.646',
+      dur: 1200,
+      loop: false,
+    });
+  }
+
   function autoShooting() {
     const camera = document.querySelector('a-camera'); // Получаем элемент камеры
     const cursor = document.querySelector('[cursor]'); // Получаем элемент курсора
@@ -241,7 +258,7 @@ function startGame() {
           hpSound.components.sound.playSound();
           scene.removeChild(target); // Удаляем сферу-мишень
           scene.removeChild(bullet);
-        }, timeToDisappear * 1000); // Умножаем на 1000, чтобы перевести в миллисекунды
+        }, timeToDisappear * 1500); // Умножаем на 1000, чтобы перевести в миллисекунды
       } else {
         hitCounter = 0;
         missSound.components.sound.playSound();
@@ -254,8 +271,4 @@ function startGame() {
       }
     }, 3000);
   }
-
-  setInterval(autoShooting, 1500);
-  console.log('Игра началась!');
-  scene.removeChild(startButton);
 }

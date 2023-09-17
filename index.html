@@ -68,11 +68,14 @@
             <a-sound id="missSound" src="assets/sound/vyibor-nujnoy-igrovoy-kategorii.mp3" autoplay="false" volume="3"
                 loop="false"></a-sound>
             <a-sound id="hpSound" src="assets/sound/hpAdded.mp3" autoplay="false" volume="1" loop="false"></a-sound>
+            <a-sound id="turretSound" src="assets/sound/turret_rotate_01.mp3" autoplay="false" volume="1"
+                loop="false"></a-sound>
             <a-entity gltf-model='#cockpitModel' rotation="0 180 0" position="0 -1 -0.09"></a-entity>
-            <a-entity id="turretBlue" gltf-model='#turret' scale="0.1 0.1 0.1" position="0.5 -0.4 0.18"
-                rotation="-5 190 90" animation-mixer>
-                <a-sphere id="shootingSpotBlue" color="red" scale="0.1 0.1 0.1"
-                    position="-0.26 3.072 10.9"></a-sphere></a-entity>
+            <a-entity id="turretBlue" gltf-model='#turret' scale="0.1 0.1 0.1" position="0.652 -1.05 -0.380"
+                rotation="-10 100 5"> <a-sphere id="shootingSpotBlue" color="red" scale="0.1 0.1 0.1"
+                    position="3.536 5.525 0.025"></a-sphere>
+            </a-entity>
+
             <a-entity cursor="fuse: true;" material="color:#00FF00; shader: flat" position="0 0 -3"
                 geometry="primitive: ring" scale="0.04 0.04 0.04">
             </a-entity>
