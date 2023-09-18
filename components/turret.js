@@ -1,0 +1,64 @@
+function turretBlueAnimation() {
+  //position="0.652 -0.96 -0.587"
+  const turretSound = document.querySelector('#turretSound');
+  turretSound.components.sound.playSound();
+  const turretModel = document.querySelector('#turretBlue');
+  turretModel.setAttribute('animation__move', {
+    property: 'position',
+    to: '0.652 -0.967 -0.646',
+    dur: 1200,
+    loop: false,
+  });
+}
+
+function turretBlueRecoil() {
+  const turretModel = document.querySelector('#turretBlue');
+  turretModel.setAttribute('animation__recoil', {
+    property: 'position',
+    to: '0.652 -0.96 -0.587',
+    dur: 150,
+    loop: false,
+  });
+  setTimeout(() => {
+    const turretModel = document.querySelector('#turretBlue');
+    turretModel.setAttribute('animation__recoil', {
+      property: 'position',
+      to: '0.652 -0.967 -0.646',
+      dur: 1500,
+      loop: false,
+    });
+  }, 150);
+}
+
+function turretRedAnimation() {
+  //position="0.652 -0.96 -0.587"
+  const turretSound = document.querySelector('#turretSound');
+  turretSound.components.sound.playSound();
+  const turretModel = document.querySelector('#turretRedRed');
+  console.log(turretModel);
+  turretModel.setAttribute('animation__move', {
+    property: 'position',
+    to: '-0.56 -0.52 -0.457',
+    dur: 1200,
+    loop: false,
+  });
+}
+
+function turretRedRecoil() {
+  const turretModel = document.querySelector('#turretRed');
+  turretModel.setAttribute('animation__recoil', {
+    property: 'position',
+    to: '0.652 -0.96 -0.587',
+    dur: 150,
+    loop: false,
+  });
+  setTimeout(() => {
+    const turretModel = document.querySelector('#turretRed');
+    turretModel.setAttribute('animation__recoil', {
+      property: 'position',
+      to: '0.652 -0.967 -0.646',
+      dur: 1500,
+      loop: false,
+    });
+  }, 150);
+}
