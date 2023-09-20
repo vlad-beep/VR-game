@@ -41,7 +41,8 @@
             active-color="#8E24AA" background-color="#4A148C" hover-color="#6A1B9A" border-color="#F3E5F5"
             font-color="#F3E5F5" onClick="playGameSound()"></a-gui-button>
         <a-assets>
-            <a-asset-item id="targetModel" src="assets/3DModels/targetModel/scene.gltf"></a-asset-item>
+            <a-asset-item id="blueTarget" src="assets/3DModels/blue_target/scene.gltf"></a-asset-item>
+            <a-asset-item id="redTarget" src="assets/3DModels/red_target/scene.gltf"></a-asset-item>
             <a-asset-item id="effect" src="assets/3DModels/cyber_spore/scene.gltf"></a-asset-item>
             <a-asset-item id="hpModel" src="assets/3DModels/hpModel/scene.gltf"></a-asset-item>
             <a-asset-item id="cockpitModel" src="assets/3DModels/cockpit/scene.gltf"></a-asset-item>
@@ -59,6 +60,7 @@
             <a-asset-item id="number9" src="assets/3DModels/number_9/scene.gltf"></a-asset-item>
             <a-asset-item id="number10" src="assets/3DModels/number_10/scene.gltf"></a-asset-item>
         </a-assets>
+
         <a-light type="directional" intensity="3" distance="15" decay="3" position="12 8.3 12" color="white"></a-light>
         <a-sky src="assets/images/SpaceArt.jpg" radius="20"
             animation="property: rotation; to: 0 360 0; loop: true; dur: 150000 easing: linear"></a-sky>
@@ -79,17 +81,16 @@
                 rotation="-10 100 5"> <a-sphere id="shootingSpotBlue" color="red" scale="0.1 0.1 0.1"
                     position="3.536 5.525 0.025"></a-sphere> <a-sound id="laserReloadSound"
                     src="assets/sound/povtoryayuschiysya-elektronnyiy-neopoznannyiy-signal.mp3" autoplay="false"
-                    volume="1" loop="false"></a-sound>
-            </a-entity>
+                    volume="1" loop="false"></a-sound></a-entity>
             <a-entity id="turretRedRed" gltf-model='#turretRed' scale="0.01 0.01 0.01" position="-0.56 -0.554 0.206"
                 rotation="10 -97 0"></a-entity>
             <a-entity cursor="fuse: true;" material="color:#00FF00; shader: flat" position="0 0 -3"
-                geometry="primitive: ring" scale="0.04 0.04 0.04">
-            </a-entity>
+                geometry="primitive: ring" scale="0.04 0.04 0.04"></a-entity>
             <a-entity geometry="primitive: ring" scale="0.06 0.06 0.06" position="0 0 -3"
                 material="color: black; shader: flat"></a-entity>
         </a-camera>
-
+        <!-- <a-entity id="redtarget" gltf-model='#redTarget' scale="0.03 0.03 0.03" position="1 1 -15"
+            animation__rotation="property: rotation; to: 0 360 0; loop: true; easing: linear; dur: 10000"> </a-entity> -->
     </a-scene>
 </body>
 

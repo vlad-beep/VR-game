@@ -10,7 +10,7 @@ AFRAME.registerComponent('spawn-hp', {
       hp.setAttribute('position', {
         x: Math.random() * 10 - 5, // Случайная позиция по X
         y: Math.random() * 5, // Случайная позиция по Y (над мишенями)
-        z: -5, // Позиция по Z будет равна 0
+        z: -15, // Позиция по Z будет равна 0
       });
 
       // Устанавливаем начальный масштаб 0 (мишень невидима)
@@ -19,7 +19,7 @@ AFRAME.registerComponent('spawn-hp', {
       // Добавляем анимацию увеличения масштаба
       hp.setAttribute('animation__scale', {
         property: 'scale',
-        to: '0.6 0.6 0.6',
+        to: '0.8 0.8 0.8',
         dur: 1000,
         easing: 'easeOutElastic',
       });
