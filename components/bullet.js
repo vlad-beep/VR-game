@@ -5,6 +5,7 @@ function startGame() {
   scene.setAttribute('spawn-hp', '');
   turretBlueAnimation();
   let hitCounter = 0;
+  let turretAnimationTriggered = false;
   let attributeNumber = 0;
   setInterval(autoShooting, 1500);
 
@@ -98,11 +99,16 @@ function startGame() {
         if (hitCounter <= 9) {
           hitCounter++;
           attributeNumber = `#number${hitCounter}`;
-        } else {
+        } else if (!turretAnimationTriggered) {
           turretRedAnimation();
+          turretAnimationTriggered = true;
+          hitCounter = 1;
+          attributeNumber = `#number${hitCounter}`;
+        } else {
           hitCounter = 1;
           attributeNumber = `#number${hitCounter}`;
         }
+
         const number = document.createElement('a-entity');
         const targetId = target.id;
         const targetEntity = document.querySelector(`#${targetId}`);
