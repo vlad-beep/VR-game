@@ -1,40 +1,96 @@
 <html>
 
 <head>
-    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
     <script src="components/bullet.js"></script>
+    <script src="components/turret.js"></script>
+    <script src="components/targets.js"></script>
+    <script src="components/health.js"></script>
+
+    <script>
+        // Запрашиваем доступ к динамикам устройства
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function (stream) {
+                // Доступ к динамикам устройства получен успешно
+                // Здесь вы можете начать воспроизведение звуков
+            })
+            .catch(function (error) {
+                // Пользователь отклонил доступ к динамикам устройства или произошла ошибка
+                console.error('Ошибка доступа к динамикам устройства:', error);
+
+                // Отобразите пользователю сообщение с просьбой разрешения доступа
+                if (error.name === 'NotAllowedError') {
+                    alert('Для полноценного использования приложения, пожалуйста, разрешите доступ к динамикам устройства.');
+                } else {
+                    alert('Произошла ошибка при попытке получения доступа к динамикам устройства.');
+                }
+            });
+
+
+        function playGameSound() {
+            startGame();
+            let Soundtrack = document.querySelector('#Soundtrack');
+            Soundtrack.components.sound.playSound();
+        }</script>
 </head>
 
 <body>
     <a-scene>
-        <!-- Left Red Box -->
         <a-gui-button id="startButton" width="2" height="0.5" value="START GAME" position="0 2 -5"
             active-color="#8E24AA" background-color="#4A148C" hover-color="#6A1B9A" border-color="#F3E5F5"
-            font-color="#F3E5F5" onClick="startGame()"></a-gui-button>
-
-
-        <a-light type="directional" intensity="1" distance="15" decay="3" position="12 8.3 12" color="white"></a-light>
+            font-color="#F3E5F5" onClick="playGameSound()"></a-gui-button>
         <a-assets>
-            <a-asset-item id="targetModel" src="assets/3DModels/abstract_shape.glb"></a-asset-item>
-            <a-asset-item id="hpModel" src="assets/3DModels/crystal_heart.glb"></a-asset-item>
-            <a-asset-item id="cockpitModel" src="assets/3DModels/scene.gltf"></a-asset-item>
+            <a-asset-item id="blueTarget" src="assets/3DModels/blue_target/scene.gltf"></a-asset-item>
+            <a-asset-item id="redTarget" src="assets/3DModels/red_target/scene.gltf"></a-asset-item>
+            <a-asset-item id="effect" src="assets/3DModels/cyber_spore/scene.gltf"></a-asset-item>
+            <a-asset-item id="hpModel" src="assets/3DModels/hpModel/scene.gltf"></a-asset-item>
+            <a-asset-item id="cockpitModel" src="assets/3DModels/cockpit/scene.gltf"></a-asset-item>
+            <a-asset-item id="turret" src="assets/3DModels/turret/turret.gltf"></a-asset-item>
+            <a-asset-item id="turretRed" src="assets/3DModels/turret2/scene.gltf"></a-asset-item>
+            <a-asset-item id="explosion" src="assets/3DModels/explosion/scene.gltf"></a-asset-item>
+            <a-asset-item id="number1" src="assets/3DModels/number_1/numberOne.gltf"></a-asset-item>
+            <a-asset-item id="number2" src="assets/3DModels/number_2/numberTwo.gltf"></a-asset-item>
+            <a-asset-item id="number3" src="assets/3DModels/number_3/scene.gltf"></a-asset-item>
+            <a-asset-item id="number4" src="assets/3DModels/number_4/scene.gltf"></a-asset-item>
+            <a-asset-item id="number5" src="assets/3DModels/number_5/scene.gltf"></a-asset-item>
+            <a-asset-item id="number6" src="assets/3DModels/number_6/scene.gltf"></a-asset-item>
+            <a-asset-item id="number7" src="assets/3DModels/number_7/scene.gltf"></a-asset-item>
+            <a-asset-item id="number8" src="assets/3DModels/number_8/scene.gltf"></a-asset-item>
+            <a-asset-item id="number9" src="assets/3DModels/number_9/scene.gltf"></a-asset-item>
+            <a-asset-item id="number10" src="assets/3DModels/number_10/scene.gltf"></a-asset-item>
         </a-assets>
-        <!-- <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane> -->
-        <a-sky src="assets/images/SpaceArt.jpg" radius="20"></a-sky>
-        <a-camera raycaster="objects: [data-raycastable]">
-            <a-entity gltf-model='#cockpitModel' rotation="0 180 0" position="0 -1 -0.09"></a-entity>
-            <a-entity cursor="fuse: true;" material="color: black; shader: flat" position="0 0 -1"
-                geometry="primitive: ring" scale="0.01 0.01 0.01"></a-entity>
 
+        <a-light type="directional" intensity="3" distance="15" decay="3" position="12 8.3 12" color="white"></a-light>
+        <a-sky src="assets/images/SpaceArt.jpg" radius="20"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 150000 easing: linear"></a-sky>
+        <a-camera raycaster="objects: [data-raycastable]" fov="100">
             <a-sound id="laserShootSound" src="assets/sound/laserSound.mp3" autoplay="false" volume="1"
                 loop="false"></a-sound>
-            <a-sound id="laserReloadSound" src="assets/sound/povtoryayuschiysya-elektronnyiy-neopoznannyiy-signal.mp3"
-                autoplay="false" volume="1" loop="false"></a-sound>
+            <a-sound id="Soundtrack" src="assets/sound/hotline_miami_04. M.O.O.N - Crystals.mp3" autoplay="false"
+                volume="0.5" loop="false"></a-sound>
+            <a-sound id="impactSound" src="assets/sound/pryamoe-popadanie-v-jivuyu-mishen.mp3" autoplay="false"
+                volume="1" loop="false"></a-sound>
+            <a-sound id="missSound" src="assets/sound/vyibor-nujnoy-igrovoy-kategorii.mp3" autoplay="false" volume="3"
+                loop="false"></a-sound>
+            <a-sound id="hpSound" src="assets/sound/hpAdded.mp3" autoplay="false" volume="1" loop="false"></a-sound>
+            <a-sound id="turretSound" src="assets/sound/turret_rotate_01.mp3" autoplay="false" volume="1"
+                loop="false"></a-sound>
+            <a-entity gltf-model='#cockpitModel' rotation="0 180 0" position="0 -1 -0.09"></a-entity>
+            <a-entity id="turretBlue" gltf-model='#turret' scale="0.1 0.1 0.1" position="0.652 -1.05 -0.380"
+                rotation="-10 100 5"> <a-sphere id="shootingSpotBlue" color="red" scale="0.1 0.1 0.1"
+                    position="3.536 5.525 0.025"></a-sphere> <a-sound id="laserReloadSound"
+                    src="assets/sound/povtoryayuschiysya-elektronnyiy-neopoznannyiy-signal.mp3" autoplay="false"
+                    volume="1" loop="false"></a-sound></a-entity>
+            <a-entity id="turretRedRed" gltf-model='#turretRed' scale="0.01 0.01 0.01" position="-0.56 -0.554 0.206"
+                rotation="10 -97 0"></a-entity>
+            <a-entity cursor="fuse: true;" material="color:#00FF00; shader: flat" position="0 0 -3"
+                geometry="primitive: ring" scale="0.04 0.04 0.04"></a-entity>
+            <a-entity geometry="primitive: ring" scale="0.06 0.06 0.06" position="0 0 -3"
+                material="color: black; shader: flat"></a-entity>
         </a-camera>
-
-
-
+        <!-- <a-entity id="redtarget" gltf-model='#redTarget' scale="0.03 0.03 0.03" position="1 1 -15"
+            animation__rotation="property: rotation; to: 0 360 0; loop: true; easing: linear; dur: 10000"> </a-entity> -->
     </a-scene>
 </body>
 
