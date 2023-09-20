@@ -31,14 +31,12 @@ function startGame() {
       this.el.setAttribute('position', position);
     },
 
-    checkCollision: function () {
-      // Ничего не делаем здесь, обработка столкновений в логике ниже
-    },
+    checkCollision: function () {},
   });
 
   function autoShooting() {
-    const camera = document.querySelector('a-camera'); // Получаем элемент камеры
-    const cursor = document.querySelector('[cursor]'); // Получаем элемент курсора
+    const camera = document.querySelector('a-camera');
+    const cursor = document.querySelector('[cursor]');
 
     const laserShootSound = document.querySelector('#laserShootSound');
     const laserReloadSound = document.querySelector('#laserReloadSound');
@@ -46,36 +44,32 @@ function startGame() {
     const missSound = document.querySelector('#missSound');
     const hpSound = document.querySelector('#hpSound');
 
-    const turret = document.querySelector('#shootingSpotBlue'); // Получаем элемент турели
-    const turretPosition = new THREE.Vector3(); // Получаем текущую позицию турели
+    const turret = document.querySelector('#shootingSpotBlue');
+    const turretPosition = new THREE.Vector3();
 
     turret.object3D.getWorldPosition(turretPosition);
 
     const velocity = 15;
-    // Получаем позиции камеры и курсора
     const cameraPosition = new THREE.Vector3();
     camera.object3D.getWorldPosition(cameraPosition);
 
     const cursorPosition = new THREE.Vector3();
     cursor.object3D.getWorldPosition(cursorPosition);
 
-    // Вычисляем вектор от камеры к курсору
     const direction = new THREE.Vector3();
-    direction.subVectors(cursorPosition, cameraPosition).normalize(); // Нормализуем вектор
-    // Создаем красную сферу (пулю) и задаем ей начальную позицию и цвет
+    direction.subVectors(cursorPosition, cameraPosition).normalize();
     const bullet = document.createElement('a-sphere');
     bullet.setAttribute('radius', '0.05');
-    bullet.setAttribute('position', turretPosition); // Начальная позиция пули равна позиции камеры
+    bullet.setAttribute('position', turretPosition);
     bullet.setAttribute('color', '#00FFFF');
     bullet.setAttribute('opacity', '0.7');
     bullet.setAttribute('bullet', '');
     bullet.setAttribute('raycaster', {
       direction: direction,
-      far: 1, // Увеличьте значение far по вашему усмотрению
-      interval: 50, // Увеличьте интервал проверки
+      far: 1,
+      interval: 50,
     });
     bullet.setAttribute(
-      // Устанавливаем направление пули
       'bullet',
       `velocity: ${direction.x * velocity} ${direction.y * velocity} ${direction.z * velocity}`,
     );
@@ -88,7 +82,6 @@ function startGame() {
     laserShootSound.components.sound.playSound();
     laserReloadSound.components.sound.playSound();
 
-    // Используем raycaster для обнаружения столкновения с сферой-мишенью
     const raycaster = new THREE.Raycaster(cameraPosition, direction);
     const intersects = raycaster.intersectObject(scene.object3D, true);
 
@@ -117,7 +110,7 @@ function startGame() {
         const distance = cameraPosition.distanceTo(targetPosition);
 
         number.setAttribute('scale', '1 1 1');
-        number.setAttribute('position', targetPosition); // Начальная позиция пули равна позиции камеры
+        number.setAttribute('position', targetPosition);
         number.setAttribute('gltf-model', attributeNumber);
         number.setAttribute('animation__rotation', {
           property: 'rotation',
@@ -135,32 +128,27 @@ function startGame() {
         setTimeout(() => {
           scene.removeChild(number);
         }, 2000);
-        // Вычисляем время, через которое мишень исчезнет
         const timeToDisappear = distance / velocity;
         console.log('Попадание!');
-
-        // Задержка перед удалением мишени на основе вычисленного времени
         setTimeout(() => {
           impactSound.components.sound.playSound();
-          scene.removeChild(target); // Удаляем сферу-мишень
+          scene.removeChild(target);
           scene.removeChild(bullet);
           scene.appendChild(number);
-        }, timeToDisappear * 1000); // Умножаем на 1000, чтобы перевести в миллисекунды
+        }, timeToDisappear * 1000);
       } else if (target.id.startsWith('hp')) {
         const targetId = target.id;
         const targetEntity = document.querySelector(`#${targetId}`);
         const targetPosition = new THREE.Vector3();
         target.object3D.getWorldPosition(targetPosition);
         const distance = cameraPosition.distanceTo(targetPosition);
-
-        // Вычисляем время, через которое мишень исчезнет
         const timeToDisappear = distance / velocity;
         console.log('hp added');
         setTimeout(() => {
           hpSound.components.sound.playSound();
-          scene.removeChild(target); // Удаляем сферу-мишень
+          scene.removeChild(target);
           scene.removeChild(bullet);
-        }, timeToDisappear * 1500); // Умножаем на 1000, чтобы перевести в миллисекунды
+        }, timeToDisappear * 1500);
       } else {
         hitCounter = 0;
         missSound.components.sound.playSound();
@@ -169,7 +157,7 @@ function startGame() {
     }
     const timer = setTimeout(() => {
       if (bullet && bullet.parentNode) {
-        bullet.parentNode.removeChild(bullet); // Удаляем пулю, только если она существует и имеет родительский элемент
+        bullet.parentNode.removeChild(bullet);
       }
     }, 3000);
   }

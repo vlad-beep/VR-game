@@ -1,5 +1,4 @@
 function turretBlueAnimation() {
-  //position="0.652 -0.96 -0.587"
   const turretSound = document.querySelector('#turretSound');
   turretSound.components.sound.playSound();
   const turretModel = document.querySelector('#turretBlue');
@@ -31,7 +30,6 @@ function turretBlueRecoil() {
 }
 
 function turretRedAnimation() {
-  //position="0.652 -0.96 -0.587"
   const turretSound = document.querySelector('#turretSound');
   turretSound.components.sound.playSound();
   const turretModel = document.querySelector('#turretRedRed');
