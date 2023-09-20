@@ -39,12 +39,16 @@ AFRAME.registerComponent('spawn-targets', {
 
         if (formationType === 0) {
           // Горизонтальная формация
-          randomX = Math.random() * 16 - 8;
-          randomY = Math.random() * 20 - 10;
+          do {
+            randomX = Math.random() * 16 - 8;
+            randomY = Math.random() * 20 - 10;
+          } while (isPositionOccupied(randomX, randomY));
         } else {
           // Вертикальная формация
-          randomX = Math.random() * 20 - 10;
-          randomY = Math.random() * 16 - 8;
+          do {
+            randomX = Math.random() * 20 - 10;
+            randomY = Math.random() * 16 - 8;
+          } while (isPositionOccupied(randomX, randomY));
         }
 
         for (let i = 0; i < targetsPerFormation; i++) {
@@ -83,6 +87,6 @@ AFRAME.registerComponent('spawn-targets', {
     createFormation();
 
     // Используем setInterval для создания формаций каждые 5 секунд
-    const spawnInterval = setInterval(createFormation, 5000);
+    const spawnInterval = setInterval(createFormation, 3000);
   },
 });
