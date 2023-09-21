@@ -10,6 +10,18 @@ function turretBlueAnimation() {
   });
 }
 
+function turretBlueGameOverAnimation() {
+  const turretSound = document.querySelector('#turretSound');
+  turretSound.components.sound.playSound();
+  const turretModel = document.querySelector('#turretBlue');
+  turretModel.setAttribute('animation__move', {
+    property: 'position',
+    to: '0.652 -1.05 -0.380',
+    dur: 1200,
+    loop: false,
+  });
+}
+
 function turretBlueRecoil() {
   const turretModel = document.querySelector('#turretBlue');
   turretModel.setAttribute('animation__recoil', {
@@ -33,10 +45,21 @@ function turretRedAnimation() {
   const turretSound = document.querySelector('#turretSound');
   turretSound.components.sound.playSound();
   const turretModel = document.querySelector('#turretRedRed');
-  console.log(turretModel);
   turretModel.setAttribute('animation__move', {
     property: 'position',
     to: '-0.56 -0.52 -0.457',
+    dur: 1200,
+    loop: false,
+  });
+}
+
+function turretRedGameOverAnimation() {
+  const turretSound = document.querySelector('#turretSound');
+  turretSound.components.sound.playSound();
+  const turretModel = document.querySelector('#turretRedRed');
+  turretModel.setAttribute('animation__move', {
+    property: 'position',
+    to: '-0.56 -0.554 0.206',
     dur: 1200,
     loop: false,
   });

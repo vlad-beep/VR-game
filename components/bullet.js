@@ -28,9 +28,16 @@ function startGame() {
   const scene = document.querySelector('a-scene');
   const startButton = document.querySelector('#startButton');
   const gameOver = document.querySelector('#gameOver');
+  const hpBar = document.querySelector('#hp-bar');
+  hpBar.setAttribute('scale', `1 1 1`);
   startButton.setAttribute('visible', 'false');
   gameOver.setAttribute('visible', 'false');
-
+  gameOver.setAttribute('animation__move', {
+    property: 'position',
+    to: '0 3 -4',
+    dur: 2000,
+    loop: false,
+  });
   scene.setAttribute('spawn-targets', '');
   scene.setAttribute('spawn-hp', '');
   scene.setAttribute('bullet', '');
