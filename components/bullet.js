@@ -29,9 +29,15 @@ function startGame() {
   const startButton = document.querySelector('#startButton');
   const gameOver = document.querySelector('#gameOver');
   const hpBar = document.querySelector('#hp-bar');
+  let hitCounter = 0;
+  let turretAnimationTriggered = false;
+  let attributeNumber = 0;
+
   hpBar.setAttribute('scale', `1 1 1`);
+
   startButton.setAttribute('position', '0 0 21');
   startButton.setAttribute('visible', 'false');
+
   gameOver.setAttribute('visible', 'false');
   gameOver.setAttribute('animation__move', {
     property: 'position',
@@ -39,13 +45,12 @@ function startGame() {
     dur: 2000,
     loop: false,
   });
+
   scene.setAttribute('spawn-targets', '');
   scene.setAttribute('spawn-hp', '');
   scene.setAttribute('bullet', '');
   turretBlueAnimation();
-  let hitCounter = 0;
-  let turretAnimationTriggered = false;
-  let attributeNumber = 0;
+
   shootingTime = setInterval(autoShooting, 1500);
 
   function autoShooting() {

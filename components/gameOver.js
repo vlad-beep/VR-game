@@ -5,6 +5,9 @@ function gameOver() {
   const startButtonText = document.querySelector('#startButtonText');
   let Soundtrack = document.querySelector('#Soundtrack');
   Soundtrack.components.sound.stopSound();
+  let gameOverSound = document.querySelector('#gameOverSound');
+  gameOverSound.components.sound.playSound();
+
   clearInterval(hpSpawnInterval);
   clearInterval(shootingTime);
   clearInterval(targetSpawnInterval);
