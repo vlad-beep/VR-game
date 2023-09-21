@@ -1,14 +1,17 @@
 <html>
 
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko&display=swap" rel="stylesheet">
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
     <script src="components/bullet.js"></script>
     <script src="components/turret.js"></script>
     <script src="components/targets.js"></script>
     <script src="components/health.js"></script>
-
     <script>
+
         // Запрашиваем доступ к динамикам устройства
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(function (stream) {
@@ -37,9 +40,8 @@
 
 <body>
     <a-scene>
-        <a-gui-button id="startButton" width="2" height="0.5" value="START GAME" position="0 2 -5"
-            active-color="#8E24AA" background-color="#4A148C" hover-color="#6A1B9A" border-color="#F3E5F5"
-            font-color="#F3E5F5" onClick="playGameSound()"></a-gui-button>
+        <a-plane id="startButton" width="2" height="0.5" position="0 2 -5" color="#48C9B0" onClick="playGameSound()"
+            visible="true"><a-text value="Start game" align="center" color="black"></a-text></a-plane>
         <a-assets>
             <a-asset-item id="blueTarget" src="assets/3DModels/blue_target/scene.gltf"></a-asset-item>
             <a-asset-item id="redTarget" src="assets/3DModels/red_target/scene.gltf"></a-asset-item>
@@ -88,7 +90,15 @@
                 geometry="primitive: ring" scale="0.04 0.04 0.04"></a-entity>
             <a-entity geometry="primitive: ring" scale="0.06 0.06 0.06" position="0 0 -3"
                 material="color: black; shader: flat"></a-entity>
+
+            <a-box width="0.55" height="0.06" depth="0.03" color="black" position="0 -0.3 -0.730" rotation="-25 0 0">
+                <a-plane id="hp-bar" width="0.5" height="0.05" color="red" position="0 0 0.02"
+                    scale="1 1 1"></a-plane></a-box>
         </a-camera>
+        <a-entity id="gameOver" visible="false"
+            text="value: GAME OVER; align: center; font: 	digitalicg-msdf.json; color: #fff; negate: true"
+            scale="25 17 17" position="0 3 -4" rotation="10 0 0"></a-entity>
+        <!-- <a-text value="GAME OVER" position="0 1.6 -4" align='center' font="" scale="3 3 3"></a-text> -->
         <!-- <a-entity id="redtarget" gltf-model='#redTarget' scale="0.03 0.03 0.03" position="1 1 -15"
             animation__rotation="property: rotation; to: 0 360 0; loop: true; easing: linear; dur: 10000"> </a-entity> -->
     </a-scene>

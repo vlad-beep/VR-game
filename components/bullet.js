@@ -1,38 +1,44 @@
+AFRAME.registerComponent('bullet', {
+  schema: {
+    velocity: { type: 'vec3', default: { x: 0, y: 0, z: 0 } },
+  },
+
+  init: function () {
+    this.el.addEventListener('componentchanged', (event) => {
+      if (event.detail.name === 'position') {
+        this.checkCollision();
+      }
+    });
+  },
+
+  tick: function () {
+    const position = this.el.getAttribute('position');
+    const velocity = this.data.velocity;
+    position.x += velocity.x * 0.016;
+    position.y += velocity.y * 0.016;
+    position.z += velocity.z * 0.016;
+    this.el.setAttribute('position', position);
+  },
+
+  checkCollision: function () {},
+});
+let shootingTime;
+
 function startGame() {
   const scene = document.querySelector('a-scene');
-  scene.removeChild(startButton);
+  const startButton = document.querySelector('#startButton');
+  const gameOver = document.querySelector('#gameOver');
+  startButton.setAttribute('visible', 'false');
+  gameOver.setAttribute('visible', 'false');
+
   scene.setAttribute('spawn-targets', '');
   scene.setAttribute('spawn-hp', '');
+  scene.setAttribute('bullet', '');
   turretBlueAnimation();
   let hitCounter = 0;
   let turretAnimationTriggered = false;
   let attributeNumber = 0;
-  setInterval(autoShooting, 1500);
-
-  AFRAME.registerComponent('bullet', {
-    schema: {
-      velocity: { type: 'vec3', default: { x: 0, y: 0, z: 0 } },
-    },
-
-    init: function () {
-      this.el.addEventListener('componentchanged', (event) => {
-        if (event.detail.name === 'position') {
-          this.checkCollision();
-        }
-      });
-    },
-
-    tick: function () {
-      const position = this.el.getAttribute('position');
-      const velocity = this.data.velocity;
-      position.x += velocity.x * 0.016;
-      position.y += velocity.y * 0.016;
-      position.z += velocity.z * 0.016;
-      this.el.setAttribute('position', position);
-    },
-
-    checkCollision: function () {},
-  });
+  shootingTime = setInterval(autoShooting, 1500);
 
   function autoShooting() {
     const camera = document.querySelector('a-camera');
@@ -49,7 +55,7 @@ function startGame() {
 
     turret.object3D.getWorldPosition(turretPosition);
 
-    const velocity = 15;
+    const velocity = 20;
     const cameraPosition = new THREE.Vector3();
     camera.object3D.getWorldPosition(cameraPosition);
 
@@ -89,17 +95,18 @@ function startGame() {
       const target = intersects[0].object.el;
 
       if (target.id.startsWith('target')) {
-        if (hitCounter <= 9) {
-          hitCounter++;
+        hitCounter++;
+
+        if (hitCounter < 10) {
           attributeNumber = `#number${hitCounter}`;
-        } else if (!turretAnimationTriggered) {
+        } else if (hitCounter == 10 && !turretAnimationTriggered) {
           turretRedAnimation();
           turretAnimationTriggered = true;
-          hitCounter = 1;
           attributeNumber = `#number${hitCounter}`;
+          hitCounter = 0;
         } else {
-          hitCounter = 1;
           attributeNumber = `#number${hitCounter}`;
+          hitCounter = 0;
         }
 
         const number = document.createElement('a-entity');
@@ -129,6 +136,7 @@ function startGame() {
           scene.removeChild(number);
         }, 2000);
         const timeToDisappear = distance / velocity;
+        health -= 2.5;
         console.log('Попадание!');
         setTimeout(() => {
           impactSound.components.sound.playSound();
@@ -143,6 +151,7 @@ function startGame() {
         target.object3D.getWorldPosition(targetPosition);
         const distance = cameraPosition.distanceTo(targetPosition);
         const timeToDisappear = distance / velocity;
+        health += 10;
         console.log('hp added');
         setTimeout(() => {
           hpSound.components.sound.playSound();
@@ -152,9 +161,11 @@ function startGame() {
       } else {
         hitCounter = 0;
         missSound.components.sound.playSound();
+        health -= 20;
         console.log('Промах');
       }
     }
+    checkHp(health, maxHealth);
     const timer = setTimeout(() => {
       if (bullet && bullet.parentNode) {
         bullet.parentNode.removeChild(bullet);

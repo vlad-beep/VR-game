@@ -1,3 +1,4 @@
+let targetSpawnInterval;
 AFRAME.registerComponent('spawn-targets', {
   init: function () {
     const scene = this.el;
@@ -74,6 +75,6 @@ AFRAME.registerComponent('spawn-targets', {
       }
     }
     createFormation();
-    const spawnInterval = setInterval(createFormation, 3000);
+    targetSpawnInterval = setInterval(createFormation, 3000);
   },
 });

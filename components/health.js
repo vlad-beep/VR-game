@@ -1,3 +1,42 @@
+let health = 100; // Текущий уровень здоровья
+const maxHealth = 100; // Максимальный уровень здоровья
+
+function checkHp(currentHp, maxHp) {
+  const hpBar = document.querySelector('#hp-bar');
+  const healthPercentage = currentHp / maxHp;
+  if (currentHp > maxHp) {
+    currentHp = maxHp;
+  } else if (currentHp <= 0) {
+    currentHp = 0;
+    hpBar.setAttribute('scale', `0 1 1`);
+    gameOver();
+  }
+  hpBar.setAttribute('scale', `${healthPercentage} 1 1`); // Делим на 10, чтобы соответствовать масштабу
+  console.log(currentHp);
+}
+
+function gameOver() {
+  const scene = document.querySelector('a-scene');
+  const gameOver = document.querySelector('#gameOver');
+  const startButton = document.querySelector('#startButton');
+
+  scene.removeAttribute('spawn-targets');
+  scene.removeAttribute('spawn-hp');
+  scene.removeAttribute('bullet');
+  clearInterval(hpSpawnInterval);
+  clearInterval(shootingTime);
+  clearInterval(targetSpawnInterval);
+
+  const targets = scene.querySelectorAll('[data-raycastable]');
+  targets.forEach((target) => {
+    scene.removeChild(target);
+  });
+  health = maxHealth;
+  gameOver.setAttribute('visible', 'true');
+  startButton.setAttribute('visible', 'true');
+}
+
+let hpSpawnInterval;
 AFRAME.registerComponent('spawn-hp', {
   init: function () {
     const scene = this.el;
@@ -48,6 +87,6 @@ AFRAME.registerComponent('spawn-hp', {
 
       hpCounter++;
     }
-    setInterval(spawnHP, 10000);
+    hpSpawnInterval = setInterval(spawnHP, 10000);
   },
 });
