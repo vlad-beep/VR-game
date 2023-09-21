@@ -3,7 +3,8 @@ function gameOver() {
   const gameOver = document.querySelector('#gameOver');
   const startButton = document.querySelector('#startButton');
   const startButtonText = document.querySelector('#startButtonText');
-
+  let Soundtrack = document.querySelector('#Soundtrack');
+  Soundtrack.components.sound.stopSound();
   clearInterval(hpSpawnInterval);
   clearInterval(shootingTime);
   clearInterval(targetSpawnInterval);
@@ -30,6 +31,7 @@ function gameOver() {
   });
   setTimeout(() => {
     startButtonText.setAttribute('value', 'RESTART');
+    startButton.setAttribute('position', '0 2 -5');
     startButton.setAttribute('visible', 'true');
   }, 2500);
 }

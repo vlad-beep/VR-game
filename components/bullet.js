@@ -30,6 +30,7 @@ function startGame() {
   const gameOver = document.querySelector('#gameOver');
   const hpBar = document.querySelector('#hp-bar');
   hpBar.setAttribute('scale', `1 1 1`);
+  startButton.setAttribute('position', '0 0 21');
   startButton.setAttribute('visible', 'false');
   gameOver.setAttribute('visible', 'false');
   gameOver.setAttribute('animation__move', {
@@ -146,10 +147,14 @@ function startGame() {
         health -= 2.5;
         console.log('Попадание!');
         setTimeout(() => {
-          impactSound.components.sound.playSound();
-          scene.removeChild(target);
-          scene.removeChild(bullet);
+          if (bullet && bullet.parentNode) {
+            bullet.parentNode.removeChild(bullet);
+          }
+          if (target && target.parentNode) {
+            target.parentNode.removeChild(target);
+          }
           scene.appendChild(number);
+          impactSound.components.sound.playSound();
         }, timeToDisappear * 1000);
       } else if (target.id.startsWith('hp')) {
         const targetId = target.id;
@@ -161,10 +166,14 @@ function startGame() {
         health += 10;
         console.log('hp added');
         setTimeout(() => {
+          if (bullet && bullet.parentNode) {
+            bullet.parentNode.removeChild(bullet);
+          }
+          if (target && target.parentNode) {
+            target.parentNode.removeChild(target);
+          }
           hpSound.components.sound.playSound();
-          scene.removeChild(target);
-          scene.removeChild(bullet);
-        }, timeToDisappear * 1500);
+        }, timeToDisappear * 1000);
       } else {
         hitCounter = 0;
         missSound.components.sound.playSound();
@@ -177,6 +186,6 @@ function startGame() {
       if (bullet && bullet.parentNode) {
         bullet.parentNode.removeChild(bullet);
       }
-    }, 3000);
+    }, 2000);
   }
 }

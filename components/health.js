@@ -52,15 +52,7 @@ AFRAME.registerComponent('spawn-hp', {
       setTimeout(() => {
         const hp = document.querySelector(`#hp${currentHpCounter}`);
         if (hp && hp.parentNode) {
-          hp.setAttribute('animation__scale', {
-            property: 'scale',
-            to: '0 0 0',
-            dur: 900,
-            easing: 'easeInElastic',
-          });
-          setTimeout(function () {
-            scene.removeChild(hp);
-          }, 1100);
+          scene.removeChild(hp);
         }
       }, 5000);
 
