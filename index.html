@@ -81,16 +81,16 @@
             <a-sound id="hpSound" src="assets/sound/hpAdded.mp3" autoplay="false" volume="1" loop="false"></a-sound>
             <a-sound id="turretSound" src="assets/sound/turret_rotate_01.mp3" autoplay="false" volume="1"
                 loop="false"></a-sound>
-            <a-entity gltf-model='#cockpitModel' rotation="40 180 0" position="0 -0.55 0.20">
+            <a-entity gltf-model='#cockpitModel' rotation="25 180 0" position="0 -0.55 0.30">
                 <a-box width="0.55" height="0.04" depth="0.03" color="black" position="0 0.69 0.63" rotation="-10 0 0">
                     <a-plane id="hp-bar" width="0.5" height="0.02" depth="0.1" color="red" position="0 0 -0.025"
                         rotation="180 0 0" scale="1 1 1"></a-plane></a-box>
                 <a-light type="spot" intensity="5" distance="4" decay="1" position="0 0.6 -1.1" color="blue"
                     rotation="180 0 0"></a-light>
-                <a-plane width="1" height="1" position="0 0.41 0.5" color="black" rotation="-130 0 0"></a-plane>
+                <a-plane width="1" height="1" position="0 0.30 0.5" color="black" rotation="-90 0 0"></a-plane>
             </a-entity>
 
-            <a-entity id="turretBlue" gltf-model='#turret' scale="0.1 0.1 0.1" position="0.652 -1.05 -0.380"
+            <a-entity id="turretBlue" gltf-model='#turret' scale="0.1 0.1 0.1" position="0.652 -0.76 -0.380"
                 rotation="-10 100 5"> <a-sphere id="shootingSpotBlue" color="red" scale="0.1 0.1 0.1"
                     position="3.536 5.525 0.025"></a-sphere> <a-sound id="laserReloadSound"
                     src="assets/sound/povtoryayuschiysya-elektronnyiy-neopoznannyiy-signal.mp3" autoplay="false"
