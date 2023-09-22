@@ -30,6 +30,8 @@
 
         function playGameSound() {
             startGame();
+            let gameOverSound = document.querySelector('#gameOverSound');
+            gameOverSound.components.sound.stopSound();
             let Soundtrack = document.querySelector('#Soundtrack');
             Soundtrack.components.sound.playSound();
         }</script>
@@ -61,10 +63,11 @@
             <a-asset-item id="number10" src="assets/3DModels/number_10/scene.gltf"></a-asset-item>
         </a-assets>
 
-        <a-light type="directional" intensity="3" distance="15" decay="3" position="12 8.3 12" color="white"></a-light>
-        <a-sky src="assets/images/battleships.jpg" radius="20"
+        <a-light type="directional" intensity="2" distance="15" decay="3" position="12 8.3 12" color="white"></a-light>
+        <a-light type="directional" intensity="4" distance="15" decay="3" position="-4.5 7 -17" color="blue"></a-light>
+        <a-sky src="assets/images/SpaceArt.jpg" radius="20"
             animation="property: rotation; to: 0 360 0; loop: true; dur: 150000 easing: linear"></a-sky>
-        <a-camera raycaster="objects: [data-raycastable]" fov="100">
+        <a-camera raycaster="objects: [data-raycastable]" fov="100" position="0 1 0">
             <a-sound id="laserShootSound" src="assets/sound/laserSound.mp3" autoplay="false" volume="1"
                 loop="false"></a-sound>
             <a-sound id="Soundtrack" src="assets/sound/hotline_miami_04. M.O.O.N - Crystals.mp3" autoplay="false"
@@ -78,7 +81,15 @@
             <a-sound id="hpSound" src="assets/sound/hpAdded.mp3" autoplay="false" volume="1" loop="false"></a-sound>
             <a-sound id="turretSound" src="assets/sound/turret_rotate_01.mp3" autoplay="false" volume="1"
                 loop="false"></a-sound>
-            <a-entity gltf-model='#cockpitModel' rotation="0 180 0" position="0 -1 -0.09"></a-entity>
+            <a-entity gltf-model='#cockpitModel' rotation="25 180 0" position="0 -0.7 0.20">
+                <a-box width="0.55" height="0.03" depth="0.03" color="black" position="0 0.69 0.63" rotation="10 0 0">
+                    <a-plane id="hp-bar" width="0.5" height="0.02" color="red" position="0 0 -0.025" rotation="180 0 0"
+                        scale="1 1 1"></a-plane></a-box>
+                <a-light type="spot" intensity="15" distance="3" decay="3" position="0 1 1.1" color="blue"
+                    rotation="-28 0 0"></a-light>
+                <a-plane width="1" height="1" position="0 0.4 0.2" color="black" rotation="-90 0 0"></a-plane>
+            </a-entity>
+
             <a-entity id="turretBlue" gltf-model='#turret' scale="0.1 0.1 0.1" position="0.652 -1.05 -0.380"
                 rotation="-10 100 5"> <a-sphere id="shootingSpotBlue" color="red" scale="0.1 0.1 0.1"
                     position="3.536 5.525 0.025"></a-sphere> <a-sound id="laserReloadSound"
@@ -91,9 +102,9 @@
             <a-entity geometry="primitive: ring" scale="0.06 0.06 0.06" position="0 0 -3"
                 material="color: black; shader: flat"></a-entity>
 
-            <a-box width="0.55" height="0.06" depth="0.03" color="black" position="0 -0.3 -0.730" rotation="-25 0 0">
-                <a-plane id="hp-bar" width="0.5" height="0.05" color="red" position="0 0 0.02"
-                    scale="1 1 1"></a-plane></a-box>
+
+
+
         </a-camera>
         <a-entity id="gameOver" visible="false"
             text="value: GAME OVER; align: center; font: 	digitalicg-msdf.json; color: #fff; negate: true"

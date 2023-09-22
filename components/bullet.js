@@ -68,7 +68,7 @@ function startGame() {
 
     turret.object3D.getWorldPosition(turretPosition);
 
-    const velocity = 20;
+    const velocity = 30;
     const cameraPosition = new THREE.Vector3();
     camera.object3D.getWorldPosition(cameraPosition);
 
