@@ -4,7 +4,7 @@ function turretBlueAnimation() {
   const turretModel = document.querySelector('#turretBlue');
   turretModel.setAttribute('animation__move', {
     property: 'position',
-    to: '0.652 -0.967 -0.646',
+    to: '0.652 -0.76 -0.380',
     dur: 1200,
     loop: false,
   });
@@ -16,7 +16,7 @@ function turretBlueGameOverAnimation() {
   const turretModel = document.querySelector('#turretBlue');
   turretModel.setAttribute('animation__move', {
     property: 'position',
-    to: '0.652 -1.05 -0.380',
+    to: '0.652 -0.86 -0.213',
     dur: 1200,
     loop: false,
   });
@@ -26,7 +26,7 @@ function turretBlueRecoil() {
   const turretModel = document.querySelector('#turretBlue');
   turretModel.setAttribute('animation__recoil', {
     property: 'position',
-    to: '0.652 -0.96 -0.587',
+    to: '0.652 -0.76 -0.3',
     dur: 150,
     loop: false,
   });
@@ -34,8 +34,8 @@ function turretBlueRecoil() {
     const turretModel = document.querySelector('#turretBlue');
     turretModel.setAttribute('animation__recoil', {
       property: 'position',
-      to: '0.652 -0.967 -0.646',
-      dur: 1500,
+      to: '0.652 -0.76 -0.380',
+      dur: 1200,
       loop: false,
     });
   }, 150);
@@ -47,7 +47,7 @@ function turretRedAnimation() {
   const turretModel = document.querySelector('#turretRedRed');
   turretModel.setAttribute('animation__move', {
     property: 'position',
-    to: '-0.56 -0.52 -0.457',
+    to: '-0.652 -0.76 -0.380',
     dur: 1200,
     loop: false,
   });
@@ -59,7 +59,7 @@ function turretRedGameOverAnimation() {
   const turretModel = document.querySelector('#turretRedRed');
   turretModel.setAttribute('animation__move', {
     property: 'position',
-    to: '-0.56 -0.554 0.206',
+    to: '-0.652 -0.86 -0.213',
     dur: 1200,
     loop: false,
   });

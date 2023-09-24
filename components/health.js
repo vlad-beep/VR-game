@@ -11,7 +11,7 @@ function checkHp(currentHp, maxHp) {
     gameOver();
   }
   const healthPercentage = currentHp / maxHp;
-  hpBar.setAttribute('scale', `${healthPercentage} 1 1`); // Делим на 10, чтобы соответствовать масштабу
+  changeScale(hpBar, healthPercentage);
   console.log(currentHp);
 }
 

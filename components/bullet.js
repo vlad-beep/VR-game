@@ -24,16 +24,30 @@ AFRAME.registerComponent('bullet', {
 });
 let shootingTime;
 
+function changeScale(object, value) {
+  object.setAttribute('animation__scale', {
+    property: 'scale',
+    to: `${value} 1 1`,
+    dur: 1000,
+    loop: false,
+  });
+}
+
 function startGame() {
   const scene = document.querySelector('a-scene');
   const startButton = document.querySelector('#startButton');
   const gameOver = document.querySelector('#gameOver');
   const hpBar = document.querySelector('#hp-bar');
+  const comboBar = document.querySelector('#combo-bar');
+  const scoreBar = document.querySelector('#score-bar');
+
   let hitCounter = 0;
+  let scoreCounter = 0;
   let turretAnimationTriggered = false;
   let attributeNumber = 0;
 
   hpBar.setAttribute('scale', `1 1 1`);
+  comboBar.setAttribute('scale', `0 1 1`);
 
   startButton.setAttribute('position', '0 0 21');
   startButton.setAttribute('visible', 'false');
@@ -51,7 +65,7 @@ function startGame() {
   scene.setAttribute('bullet', '');
   turretBlueAnimation();
 
-  shootingTime = setInterval(autoShooting, 1500);
+  shootingTime = setInterval(autoShooting, 1200);
 
   function autoShooting() {
     const camera = document.querySelector('a-camera');
@@ -93,7 +107,6 @@ function startGame() {
       `velocity: ${direction.x * velocity} ${direction.y * velocity} ${direction.z * velocity}`,
     );
 
-    // Добавляем пулю на сцену
     const scene = document.querySelector('a-scene');
     scene.appendChild(bullet);
     turretBlueRecoil();
@@ -109,8 +122,11 @@ function startGame() {
 
       if (target.id.startsWith('target')) {
         hitCounter++;
-
+        scoreCounter += hitCounter * 100;
         if (hitCounter < 10) {
+          const currentScale = comboBar.getAttribute('scale');
+          const newXScale = parseFloat(currentScale.x) + 0.2;
+          changeScale(comboBar, newXScale);
           attributeNumber = `#number${hitCounter}`;
         } else if (hitCounter == 10 && !turretAnimationTriggered) {
           turretRedAnimation();
@@ -121,7 +137,13 @@ function startGame() {
           attributeNumber = `#number${hitCounter}`;
           hitCounter = 0;
         }
-
+        if (hitCounter % 5 == 0) {
+          health += 10;
+          changeScale(comboBar, 0);
+        }
+        scoreBar.setAttribute('text', {
+          value: `${scoreCounter}`,
+        });
         const number = document.createElement('a-entity');
         const targetId = target.id;
         const targetEntity = document.querySelector(`#${targetId}`);
@@ -183,6 +205,7 @@ function startGame() {
         hitCounter = 0;
         missSound.components.sound.playSound();
         health -= 20;
+        changeScale(comboBar, 0);
         console.log('Промах');
       }
     }
