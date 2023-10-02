@@ -11,15 +11,31 @@ AFRAME.registerComponent('spawn-targets', {
       return targets.length;
     }
 
-    function isPositionOccupied(x, y) {
+    function isPositionOccupied(x, y, formationType) {
+      let positions = [];
+      for (let i = 0; i < targetsPerFormation; i++) {
+        if (formationType === 0) {
+          formationElx = x + i * spacing - (targetsPerFormation / 2) * spacing;
+          formationEly = y;
+          positions.push({ x: formationElx, y: formationEly });
+        } else {
+          formationElx = x;
+          formationEly = y + i * spacing - (targetsPerFormation / 2) * spacing;
+          positions.push({ x: formationElx, y: formationEly });
+        }
+      }
       const targets = scene.querySelectorAll('[data-raycastable]');
       for (const target of targets) {
         const position = target.getAttribute('position');
         const targetX = position.x;
         const targetY = position.y;
-        const distance = Math.sqrt(Math.pow(x - targetX, 2) + Math.pow(y - targetY, 2));
-        if (distance < spacing) {
-          return true;
+        for (let i = 0; i < positions.length; i++) {
+          let distance = Math.sqrt(
+            Math.pow(positions[i].x - targetX, 2) + Math.pow(positions[i].y - targetY, 2),
+          );
+          if (distance < spacing) {
+            return true;
+          }
         }
       }
       return false;
@@ -37,14 +53,13 @@ AFRAME.registerComponent('spawn-targets', {
           do {
             randomX = Math.random() * 16 - 8;
             randomY = Math.random() * 20 - 10;
-          } while (isPositionOccupied(randomX, randomY));
+          } while (isPositionOccupied(randomX, randomY, formationType));
         } else {
           do {
             randomX = Math.random() * 20 - 10;
             randomY = Math.random() * 16 - 8;
-          } while (isPositionOccupied(randomX, randomY));
+          } while (isPositionOccupied(randomX, randomY, formationType));
         }
-
         for (let i = 0; i < targetsPerFormation; i++) {
           const target = document.createElement('a-entity');
           target.setAttribute('gltf-model', '#blueTarget');
