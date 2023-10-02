@@ -9,24 +9,19 @@
     <script src="components/gameOver.js"></script>
     <script>
 
-        // Запрашиваем доступ к динамикам устройства
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(function (stream) {
-                // Доступ к динамикам устройства получен успешно
-                // Здесь вы можете начать воспроизведение звуков
+
             })
             .catch(function (error) {
-                // Пользователь отклонил доступ к динамикам устройства или произошла ошибка
                 console.error('Ошибка доступа к динамикам устройства:', error);
 
-                // Отобразите пользователю сообщение с просьбой разрешения доступа
                 if (error.name === 'NotAllowedError') {
                     alert('Для полноценного использования приложения, пожалуйста, разрешите доступ к динамикам устройства.');
                 } else {
                     alert('Произошла ошибка при попытке получения доступа к динамикам устройства.');
                 }
             });
-
 
         function playGameSound() {
             startGame();
@@ -117,10 +112,11 @@
 
         <a-entity id="gameOver" visible="false"
             text="value: GAME OVER; align: center; font: 	digitalicg-msdf.json; color: #fff; negate: true"
-            scale="25 17 17" position="0 3 -4" rotation="10 0 0"></a-entity>
-        <!-- <a-text value="GAME OVER" position="0 1.6 -4" align='center' font="" scale="3 3 3"></a-text> -->
-        <!-- <a-entity id="redtarget" gltf-model='#redTarget' scale="0.03 0.03 0.03" position="1 1 -15"
-            animation__rotation="property: rotation; to: 0 360 0; loop: true; easing: linear; dur: 10000"> </a-entity> -->
+            scale="25 17 17" position="0 3 -4" rotation="10 0 0"></a-entity>>
+        <a-plane id="score-bar-finish" visible="false" width="1.2" height="2" position="-2 1 -20" color="#48C9B0"
+            rotation="0 20 0" opacity="1" material="shader: flat;"><a-entity id="score-bar-finish-text" visible="true"
+                text="value: 000; align: left; font: 	digitalicg-msdf.json; color: black; negate: false" scale="4 4 4"
+                position="1.6 0.8 0.1" rotation="0 0 0"></a-entity></a-plane>
     </a-scene>
 </body>
 

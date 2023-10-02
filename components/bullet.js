@@ -40,6 +40,8 @@ function startGame() {
   const hpBar = document.querySelector('#hp-bar');
   const comboBar = document.querySelector('#combo-bar');
   const scoreBar = document.querySelector('#score-bar');
+  const scoreFinishBar = document.querySelector('#score-bar-finish');
+  const scoreFinishBarText = document.querySelector('#score-bar-finish-text');
 
   let hitCounter = 0;
   let scoreCounter = 0;
@@ -51,6 +53,9 @@ function startGame() {
 
   startButton.setAttribute('position', '0 0 21');
   startButton.setAttribute('visible', 'false');
+
+  scoreFinishBar.setAttribute('position', '0 0 21');
+  scoreFinishBar.setAttribute('visible', 'false');
 
   gameOver.setAttribute('visible', 'false');
   gameOver.setAttribute('animation__move', {
@@ -142,6 +147,9 @@ function startGame() {
           changeScale(comboBar, 0);
         }
         scoreBar.setAttribute('text', {
+          value: `${scoreCounter}`,
+        });
+        scoreFinishBarText.setAttribute('text', {
           value: `${scoreCounter}`,
         });
         const number = document.createElement('a-entity');

@@ -1,5 +1,5 @@
-let health = 100; // Текущий уровень здоровья
-const maxHealth = 100; // Максимальный уровень здоровья
+let health = 100;
+const maxHealth = 100;
 
 function checkHp(currentHp, maxHp) {
   const hpBar = document.querySelector('#hp-bar');
@@ -12,7 +12,6 @@ function checkHp(currentHp, maxHp) {
   }
   const healthPercentage = currentHp / maxHp;
   changeScale(hpBar, healthPercentage);
-  console.log(currentHp);
 }
 
 let hpSpawnInterval;
