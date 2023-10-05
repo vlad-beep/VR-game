@@ -66,18 +66,18 @@ function turretRedGameOverAnimation() {
 }
 
 function turretRedRecoil() {
-  const turretModel = document.querySelector('#turretRed');
+  const turretModel = document.querySelector('#turretRedRed');
   turretModel.setAttribute('animation__recoil', {
     property: 'position',
-    to: '0.652 -0.96 -0.587',
+    to: '-0.652 -0.76 -0.300',
     dur: 150,
     loop: false,
   });
   setTimeout(() => {
-    const turretModel = document.querySelector('#turretRed');
+    const turretModel = document.querySelector('#turretRedRed');
     turretModel.setAttribute('animation__recoil', {
       property: 'position',
-      to: '0.652 -0.967 -0.646',
+      to: '-0.652 -0.76 -0.380',
       dur: 1500,
       loop: false,
     });

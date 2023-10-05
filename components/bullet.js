@@ -1,3 +1,11 @@
+//Variables & constants
+let blueTurretShootingInteval;
+let redTurretShootingInteval;
+let hitCounter = 0;
+let scoreCounter = 0;
+let attributeNumber = 0;
+let turretAnimationTriggered;
+
 AFRAME.registerComponent('bullet', {
   schema: {
     velocity: { type: 'vec3', default: { x: 0, y: 0, z: 0 } },
@@ -22,7 +30,6 @@ AFRAME.registerComponent('bullet', {
 
   checkCollision: function () {},
 });
-let shootingTime;
 
 function changeScale(object, value) {
   object.setAttribute('animation__scale', {
@@ -39,14 +46,12 @@ function startGame() {
   const gameOver = document.querySelector('#gameOver');
   const hpBar = document.querySelector('#hp-bar');
   const comboBar = document.querySelector('#combo-bar');
-  const scoreBar = document.querySelector('#score-bar');
   const scoreFinishBar = document.querySelector('#score-bar-finish');
-  const scoreFinishBarText = document.querySelector('#score-bar-finish-text');
-
-  let hitCounter = 0;
-  let scoreCounter = 0;
-  let turretAnimationTriggered = false;
-  let attributeNumber = 0;
+  turretAnimationTriggered = false;
+  let gameOverSound = document.querySelector('#gameOverSound');
+  gameOverSound.components.sound.stopSound();
+  let Soundtrack = document.querySelector('#Soundtrack');
+  Soundtrack.components.sound.playSound();
 
   hpBar.setAttribute('scale', `1 1 1`);
   comboBar.setAttribute('scale', `0 1 1`);
@@ -70,158 +75,317 @@ function startGame() {
   scene.setAttribute('bullet', '');
   turretBlueAnimation();
 
-  shootingTime = setInterval(autoShooting, 1200);
+  blueTurretShootingInteval = setInterval(turretBlueShooting, 1200);
+}
 
-  function autoShooting() {
-    const camera = document.querySelector('a-camera');
-    const cursor = document.querySelector('[cursor]');
+function turretRedShooting() {
+  const scene = document.querySelector('a-scene');
+  const turretRed = document.querySelector('#shootingSpotRed');
+  const comboBar = document.querySelector('#combo-bar');
+  const scoreBar = document.querySelector('#score-bar');
+  const scoreFinishBarText = document.querySelector('#score-bar-finish-text');
+  const laserShootSound = document.querySelector('#redLaserShootSound');
+  const laserReloadSound = document.querySelector('#redLaserReloadSound');
+  const velocity = 30;
 
-    const laserShootSound = document.querySelector('#laserShootSound');
-    const laserReloadSound = document.querySelector('#laserReloadSound');
-    const impactSound = document.querySelector('#impactSound');
-    const missSound = document.querySelector('#missSound');
-    const hpSound = document.querySelector('#hpSound');
+  clearInterval(blueTurretShootingInteval);
+  blueTurretShootingInteval = setInterval(turretBlueShooting, 1200);
 
-    const turret = document.querySelector('#shootingSpotBlue');
-    const turretPosition = new THREE.Vector3();
+  const turretPositionRed = new THREE.Vector3();
+  turretRed.object3D.getWorldPosition(turretPositionRed);
 
-    turret.object3D.getWorldPosition(turretPosition);
+  const camera = document.querySelector('a-camera');
+  const cursor = document.querySelector('[cursor]');
 
-    const velocity = 30;
-    const cameraPosition = new THREE.Vector3();
-    camera.object3D.getWorldPosition(cameraPosition);
+  const cameraPosition = new THREE.Vector3();
+  camera.object3D.getWorldPosition(cameraPosition);
 
-    const cursorPosition = new THREE.Vector3();
-    cursor.object3D.getWorldPosition(cursorPosition);
+  const cursorPosition = new THREE.Vector3();
+  cursor.object3D.getWorldPosition(cursorPosition);
 
-    const direction = new THREE.Vector3();
-    direction.subVectors(cursorPosition, cameraPosition).normalize();
-    const bullet = document.createElement('a-sphere');
-    bullet.setAttribute('radius', '0.05');
-    bullet.setAttribute('position', turretPosition);
-    bullet.setAttribute('color', '#00FFFF');
-    bullet.setAttribute('opacity', '0.7');
-    bullet.setAttribute('bullet', '');
-    bullet.setAttribute('raycaster', {
-      direction: direction,
-      far: 1,
-      interval: 50,
-    });
-    bullet.setAttribute(
-      'bullet',
-      `velocity: ${direction.x * velocity} ${direction.y * velocity} ${direction.z * velocity}`,
-    );
+  const direction = new THREE.Vector3();
+  direction.subVectors(cursorPosition, cameraPosition).normalize();
 
-    const scene = document.querySelector('a-scene');
-    scene.appendChild(bullet);
-    turretBlueRecoil();
+  const bulletRed = document.createElement('a-sphere');
+  bulletRed.setAttribute('radius', '0.05');
+  bulletRed.setAttribute('position', turretPositionRed);
+  bulletRed.setAttribute('color', 'red');
+  bulletRed.setAttribute('opacity', '0.7');
+  bulletRed.setAttribute('bullet', '');
+  bulletRed.setAttribute('raycaster', {
+    direction: direction,
+    far: 1,
+    interval: 50,
+  });
+  bulletRed.setAttribute(
+    'bullet',
+    `velocity: ${direction.x * velocity} ${direction.y * velocity} ${direction.z * velocity}`,
+  );
+  laserShootSound.components.sound.playSound();
+  laserReloadSound.components.sound.playSound();
+  scene.appendChild(bulletRed);
+  turretRedRecoil();
 
-    laserShootSound.components.sound.playSound();
-    laserReloadSound.components.sound.playSound();
+  const raycaster = new THREE.Raycaster(cameraPosition, direction);
+  const intersects = raycaster.intersectObject(scene.object3D, true);
 
-    const raycaster = new THREE.Raycaster(cameraPosition, direction);
-    const intersects = raycaster.intersectObject(scene.object3D, true);
+  if (intersects.length > 0.1) {
+    const target = intersects[0].object.el;
 
-    if (intersects.length > 0.1) {
-      const target = intersects[0].object.el;
-
-      if (target.id.startsWith('target')) {
-        hitCounter++;
-        scoreCounter += hitCounter * 100;
-        if (hitCounter < 10) {
-          const currentScale = comboBar.getAttribute('scale');
-          const newXScale = parseFloat(currentScale.x) + 0.2;
-          changeScale(comboBar, newXScale);
-          attributeNumber = `#number${hitCounter}`;
-        } else if (hitCounter == 10 && !turretAnimationTriggered) {
-          turretRedAnimation();
-          turretAnimationTriggered = true;
-          attributeNumber = `#number${hitCounter}`;
-          hitCounter = 0;
-        } else {
-          attributeNumber = `#number${hitCounter}`;
-          hitCounter = 0;
-        }
-        if (hitCounter % 5 == 0) {
-          health += 10;
-          changeScale(comboBar, 0);
-        }
-        scoreBar.setAttribute('text', {
-          value: `${scoreCounter}`,
-        });
-        scoreFinishBarText.setAttribute('text', {
-          value: `${scoreCounter}`,
-        });
-        const number = document.createElement('a-entity');
-        const targetId = target.id;
-        const targetEntity = document.querySelector(`#${targetId}`);
-        const targetPosition = new THREE.Vector3();
-        target.object3D.getWorldPosition(targetPosition);
-        const distance = cameraPosition.distanceTo(targetPosition);
-
-        number.setAttribute('scale', '1 1 1');
-        number.setAttribute('position', targetPosition);
-        number.setAttribute('gltf-model', attributeNumber);
-        number.setAttribute('animation__rotation', {
-          property: 'rotation',
-          to: '0 360 0',
-          dur: 1000,
-          loop: true,
-        });
-        number.setAttribute('animation__move', {
-          property: 'position',
-          to: `${targetPosition.x} ${targetPosition.y + 17} ${targetPosition.z}`,
-          dur: 1000,
-          loop: false,
-        });
-
-        setTimeout(() => {
-          scene.removeChild(number);
-        }, 2000);
-        const timeToDisappear = distance / velocity;
-        health -= 2.5;
-        console.log('Попадание!');
-        setTimeout(() => {
-          if (bullet && bullet.parentNode) {
-            bullet.parentNode.removeChild(bullet);
-          }
-          if (target && target.parentNode) {
-            target.parentNode.removeChild(target);
-          }
-          scene.appendChild(number);
-          impactSound.components.sound.playSound();
-        }, timeToDisappear * 1000);
-      } else if (target.id.startsWith('hp')) {
-        const targetId = target.id;
-        const targetEntity = document.querySelector(`#${targetId}`);
-        const targetPosition = new THREE.Vector3();
-        target.object3D.getWorldPosition(targetPosition);
-        const distance = cameraPosition.distanceTo(targetPosition);
-        const timeToDisappear = distance / velocity;
-        health += 10;
-        console.log('hp added');
-        setTimeout(() => {
-          if (bullet && bullet.parentNode) {
-            bullet.parentNode.removeChild(bullet);
-          }
-          if (target && target.parentNode) {
-            target.parentNode.removeChild(target);
-          }
-          hpSound.components.sound.playSound();
-        }, timeToDisappear * 1000);
-      } else {
+    if (target.id.startsWith('target')) {
+      hitCounter++;
+      scoreCounter += hitCounter * 100;
+      if (hitCounter < 10) {
+        const currentScale = comboBar.getAttribute('scale');
+        const newXScale = parseFloat(currentScale.x) + 0.2;
+        changeScale(comboBar, newXScale);
+        attributeNumber = `#number${hitCounter}`;
+      } else if (hitCounter == 10) {
+        attributeNumber = `#number${hitCounter}`;
         hitCounter = 0;
-        missSound.components.sound.playSound();
-        health -= 20;
+      } else {
+        attributeNumber = `#number${hitCounter}`;
+        hitCounter = 0;
+      }
+      if (hitCounter % 5 == 0) {
+        health += 10;
         changeScale(comboBar, 0);
-        console.log('Промах');
       }
+      scoreBar.setAttribute('text', {
+        value: `${scoreCounter}`,
+      });
+      scoreFinishBarText.setAttribute('text', {
+        value: `${scoreCounter}`,
+      });
+      const number = document.createElement('a-entity');
+      const targetId = target.id;
+      const targetEntity = document.querySelector(`#${targetId}`);
+      const targetPosition = new THREE.Vector3();
+      target.object3D.getWorldPosition(targetPosition);
+      const distance = cameraPosition.distanceTo(targetPosition);
+
+      number.setAttribute('scale', '1 1 1');
+      number.setAttribute('position', targetPosition);
+      number.setAttribute('gltf-model', attributeNumber);
+      number.setAttribute('animation__rotation', {
+        property: 'rotation',
+        to: '0 360 0',
+        dur: 1000,
+        loop: true,
+      });
+      number.setAttribute('animation__move', {
+        property: 'position',
+        to: `${targetPosition.x} ${targetPosition.y + 17} ${targetPosition.z}`,
+        dur: 1000,
+        loop: false,
+      });
+
+      setTimeout(() => {
+        scene.removeChild(number);
+      }, 2000);
+      const timeToDisappear = distance / velocity;
+      health -= 2.5;
+      console.log('Попадание!');
+      setTimeout(() => {
+        if (bulletRed && bulletRed.parentNode) {
+          bulletRed.parentNode.removeChild(bulletRed);
+        }
+        if (target && target.parentNode) {
+          target.parentNode.removeChild(target);
+        }
+        scene.appendChild(number);
+        impactSound.components.sound.playSound();
+      }, timeToDisappear * 1000);
+    } else if (target.id.startsWith('hp')) {
+      const targetId = target.id;
+      const targetEntity = document.querySelector(`#${targetId}`);
+      const targetPosition = new THREE.Vector3();
+      target.object3D.getWorldPosition(targetPosition);
+      const distance = cameraPosition.distanceTo(targetPosition);
+      const timeToDisappear = distance / velocity;
+      health += 10;
+      console.log('hp added');
+      setTimeout(() => {
+        if (bulletRed && bulletRed.parentNode) {
+          bulletRed.parentNode.removeChild(bulletRed);
+        }
+        if (target && target.parentNode) {
+          target.parentNode.removeChild(target);
+        }
+        hpSound.components.sound.playSound();
+      }, timeToDisappear * 1000);
+    } else {
+      hitCounter = 0;
+      missSound.components.sound.playSound();
+      health -= 20;
+      changeScale(comboBar, 0);
+      console.log('Промах');
     }
-    checkHp(health, maxHealth);
-    const timer = setTimeout(() => {
-      if (bullet && bullet.parentNode) {
-        bullet.parentNode.removeChild(bullet);
-      }
-    }, 2000);
   }
+  checkHp(health, maxHealth);
+
+  setTimeout(() => {
+    console.log('Удаляю пулю');
+    if (bulletRed && bulletRed.parentNode) {
+      bulletRed.parentNode.removeChild(bulletRed);
+    }
+  }, 2000);
+}
+
+function turretBlueShooting() {
+  const scene = document.querySelector('a-scene');
+  const comboBar = document.querySelector('#combo-bar');
+  const scoreBar = document.querySelector('#score-bar');
+  const scoreFinishBarText = document.querySelector('#score-bar-finish-text');
+  const velocity = 30;
+
+  const camera = document.querySelector('a-camera');
+  const cursor = document.querySelector('[cursor]');
+
+  const laserShootSound = document.querySelector('#laserShootSound');
+  const laserReloadSound = document.querySelector('#laserReloadSound');
+  const impactSound = document.querySelector('#impactSound');
+  const missSound = document.querySelector('#missSound');
+  const hpSound = document.querySelector('#hpSound');
+
+  const turret = document.querySelector('#shootingSpotBlue');
+  const turretPosition = new THREE.Vector3();
+
+  turret.object3D.getWorldPosition(turretPosition);
+
+  const cameraPosition = new THREE.Vector3();
+  camera.object3D.getWorldPosition(cameraPosition);
+
+  const cursorPosition = new THREE.Vector3();
+  cursor.object3D.getWorldPosition(cursorPosition);
+
+  const direction = new THREE.Vector3();
+  direction.subVectors(cursorPosition, cameraPosition).normalize();
+  const bullet = document.createElement('a-sphere');
+  bullet.setAttribute('radius', '0.05');
+  bullet.setAttribute('position', turretPosition);
+  bullet.setAttribute('color', '#00FFFF');
+  bullet.setAttribute('opacity', '0.7');
+  bullet.setAttribute('bullet', '');
+  bullet.setAttribute('raycaster', {
+    direction: direction,
+    far: 1,
+    interval: 50,
+  });
+  bullet.setAttribute(
+    'bullet',
+    `velocity: ${direction.x * velocity} ${direction.y * velocity} ${direction.z * velocity}`,
+  );
+
+  scene.appendChild(bullet);
+  turretBlueRecoil();
+
+  laserShootSound.components.sound.playSound();
+  laserReloadSound.components.sound.playSound();
+
+  const raycaster = new THREE.Raycaster(cameraPosition, direction);
+  const intersects = raycaster.intersectObject(scene.object3D, true);
+
+  if (intersects.length > 0.1) {
+    const target = intersects[0].object.el;
+
+    if (target.id.startsWith('target')) {
+      hitCounter++;
+      scoreCounter += hitCounter * 100;
+      if (hitCounter < 10) {
+        const currentScale = comboBar.getAttribute('scale');
+        const newXScale = parseFloat(currentScale.x) + 0.2;
+        changeScale(comboBar, newXScale);
+        attributeNumber = `#number${hitCounter}`;
+      } else if (hitCounter == 10 && !turretAnimationTriggered) {
+        turretRedAnimation();
+        redTurretShootingInteval = setInterval(turretRedShooting, 4800);
+        turretAnimationTriggered = true;
+        attributeNumber = `#number${hitCounter}`;
+        hitCounter = 0;
+      } else {
+        attributeNumber = `#number${hitCounter}`;
+        hitCounter = 0;
+      }
+      if (hitCounter % 5 == 0) {
+        health += 10;
+        changeScale(comboBar, 0);
+      }
+      scoreBar.setAttribute('text', {
+        value: `${scoreCounter}`,
+      });
+      scoreFinishBarText.setAttribute('text', {
+        value: `${scoreCounter}`,
+      });
+      const number = document.createElement('a-entity');
+      const targetId = target.id;
+      const targetEntity = document.querySelector(`#${targetId}`);
+      const targetPosition = new THREE.Vector3();
+      target.object3D.getWorldPosition(targetPosition);
+      const distance = cameraPosition.distanceTo(targetPosition);
+
+      number.setAttribute('scale', '1 1 1');
+      number.setAttribute('position', targetPosition);
+      number.setAttribute('gltf-model', attributeNumber);
+      number.setAttribute('animation__rotation', {
+        property: 'rotation',
+        to: '0 360 0',
+        dur: 1000,
+        loop: true,
+      });
+      number.setAttribute('animation__move', {
+        property: 'position',
+        to: `${targetPosition.x} ${targetPosition.y + 17} ${targetPosition.z}`,
+        dur: 1000,
+        loop: false,
+      });
+
+      setTimeout(() => {
+        scene.removeChild(number);
+      }, 2000);
+      const timeToDisappear = distance / velocity;
+      health -= 2.5;
+      console.log('Попадание!');
+      setTimeout(() => {
+        if (bullet && bullet.parentNode) {
+          bullet.parentNode.removeChild(bullet);
+        }
+        if (target && target.parentNode) {
+          target.parentNode.removeChild(target);
+        }
+        scene.appendChild(number);
+        impactSound.components.sound.playSound();
+      }, timeToDisappear * 1000);
+    } else if (target.id.startsWith('hp')) {
+      const targetId = target.id;
+      const targetEntity = document.querySelector(`#${targetId}`);
+      const targetPosition = new THREE.Vector3();
+      target.object3D.getWorldPosition(targetPosition);
+      const distance = cameraPosition.distanceTo(targetPosition);
+      const timeToDisappear = distance / velocity;
+      health += 10;
+      console.log('hp added');
+      setTimeout(() => {
+        if (bullet && bullet.parentNode) {
+          bullet.parentNode.removeChild(bullet);
+        }
+        if (target && target.parentNode) {
+          target.parentNode.removeChild(target);
+        }
+        hpSound.components.sound.playSound();
+      }, timeToDisappear * 1000);
+    } else {
+      hitCounter = 0;
+      missSound.components.sound.playSound();
+      health -= 20;
+      changeScale(comboBar, 0);
+      console.log('Промах');
+    }
+  }
+  checkHp(health, maxHealth);
+  const timer = setTimeout(() => {
+    if (bullet && bullet.parentNode) {
+      bullet.parentNode.removeChild(bullet);
+    }
+  }, 2000);
 }

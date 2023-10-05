@@ -11,7 +11,8 @@ function gameOver() {
   gameOverSound.components.sound.playSound();
 
   clearInterval(hpSpawnInterval);
-  clearInterval(shootingTime);
+  clearInterval(blueTurretShootingInteval);
+  clearInterval(redTurretShootingInteval);
   clearInterval(targetSpawnInterval);
   scene.removeAttribute('spawn-targets');
   scene.removeAttribute('spawn-hp');

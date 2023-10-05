@@ -8,7 +8,6 @@
     <script src="components/health.js"></script>
     <script src="components/gameOver.js"></script>
     <script>
-
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(function (stream) {
 
@@ -22,19 +21,12 @@
                     alert('Произошла ошибка при попытке получения доступа к динамикам устройства.');
                 }
             });
-
-        function playGameSound() {
-            startGame();
-            let gameOverSound = document.querySelector('#gameOverSound');
-            gameOverSound.components.sound.stopSound();
-            let Soundtrack = document.querySelector('#Soundtrack');
-            Soundtrack.components.sound.playSound();
-        }</script>
+    </script>
 </head>
 
 <body>
     <a-scene>
-        <a-plane id="startButton" width="2" height="0.5" position="0 2 -5" color="#48C9B0" onClick="playGameSound()"
+        <a-plane id="startButton" width="2" height="0.5" position="0 2 -5" color="#48C9B0" onClick="startGame()"
             visible="true"><a-text id="startButtonText" value="START GAME" align="center"
                 color="black"></a-text></a-plane>
         <a-assets>
@@ -63,8 +55,6 @@
         <a-sky src="assets/images/SpaceArt.jpg" radius="25"
             animation="property: rotation; to: 0 360 0; loop: true; dur: 150000 easing: linear"></a-sky>
         <a-camera raycaster="objects: [data-raycastable]" fov="80" position="0 1 0">
-            <a-sound id="laserShootSound" src="assets/sound/laserSound.mp3" autoplay="false" volume="1"
-                loop="false"></a-sound>
             <a-sound id="Soundtrack" src="assets/sound/hotline_miami_04. M.O.O.N - Crystals.mp3" autoplay="false"
                 volume="0.5" loop="false"></a-sound>
             <a-sound id="gameOverSound" src="assets/sound/hotline_miami_15. El Huervo - Daisuke.mp3" autoplay="false"
@@ -94,28 +84,29 @@
             </a-entity>
 
             <a-entity id="turretBlue" gltf-model='#turret' scale="0.1 0.1 0.1" position="0.652 -0.86 -0.213"
-                rotation="-10 100 5"> <a-sphere id="shootingSpotBlue" color="red" scale="0.1 0.1 0.1"
-                    position="3.536 5.525 0.025"></a-sphere> <a-sound id="laserReloadSound"
-                    src="assets/sound/povtoryayuschiysya-elektronnyiy-neopoznannyiy-signal.mp3" autoplay="false"
-                    volume="1" loop="false"></a-sound></a-entity>
+                rotation="-10 100 5"> <a-sphere id="shootingSpotBlue" color="blue" scale="0.1 0.1 0.1"
+                    position="3.536 5.525 0.025"></a-sphere> <a-sound id="laserShootSound"
+                    src="assets/sound/laserSound.mp3" autoplay="false" volume="1" loop="false"></a-sound><a-sound
+                    id="laserReloadSound" src="assets/sound/povtoryayuschiysya-elektronnyiy-neopoznannyiy-signal.mp3"
+                    autoplay="false" volume="1" loop="false"></a-sound></a-entity>
             <a-entity id="turretRedRed" gltf-model='#turret' scale="0.1 0.1 0.1" position="-0.652 -0.86 -0.213"
-                rotation="10 80 5"></a-entity>
+                rotation="10 80 5"><a-sphere id="shootingSpotRed" color="red" scale="0.1 0.1 0.1"
+                    position="3.536 5.525 -0.025"></a-sphere> <a-sound id="redLaserShootSound"
+                    src="assets/sound/RedTurretShotSound.mp3" autoplay="false" volume="1"
+                    loop="false"></a-sound><a-sound id="redLaserReloadSound" src="assets/sound/RedTurretReloadSound.mp3"
+                    autoplay="false" volume="1" loop="false"></a-sound></a-entity>
             <a-entity cursor="fuse: true;" material="color:#00FF00; shader: flat" position="0 0 -3"
                 geometry="primitive: ring" scale="0.04 0.04 0.04"></a-entity>
             <a-entity geometry="primitive: ring" scale="0.06 0.06 0.06" position="0 0 -3"
                 material="color: black; shader: flat"></a-entity>
-
-
-
-
         </a-camera>
 
         <a-entity id="gameOver" visible="false"
-            text="value: GAME OVER; align: center; font: 	digitalicg-msdf.json; color: #fff; negate: true"
+            text="value: GAME OVER; align: center; font: digitalicg-msdf.json; color: #fff; negate: true"
             scale="25 17 17" position="0 3 -4" rotation="10 0 0"></a-entity>>
         <a-plane id="score-bar-finish" visible="false" width="1.2" height="2" position="-2 1 -20" color="#48C9B0"
             rotation="0 20 0" opacity="1" material="shader: flat;"><a-entity id="score-bar-finish-text" visible="true"
-                text="value: 000; align: left; font: 	digitalicg-msdf.json; color: black; negate: false" scale="4 4 4"
+                text="value: 000; align: left; font: digitalicg-msdf.json; color: black; negate: false" scale="4 4 4"
                 position="1.6 0.8 0.1" rotation="0 0 0"></a-entity></a-plane>
     </a-scene>
 </body>
