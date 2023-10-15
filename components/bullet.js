@@ -5,7 +5,7 @@ let hitCounter = 0;
 let scoreCounter = 0;
 let attributeNumber = 0;
 let turretAnimationTriggered;
-
+let colorChangeCount = 0;
 AFRAME.registerComponent('bullet', {
   schema: {
     velocity: { type: 'vec3', default: { x: 0, y: 0, z: 0 } },
@@ -40,6 +40,25 @@ function changeScale(object, value) {
   });
 }
 
+function animateColorChange(element, totalChanges, duration) {
+  let colorChangeCount = 0;
+  const intervalDuration = duration / (totalChanges * 2);
+
+  const colorChangeInterval = setInterval(() => {
+    if (colorChangeCount % 2 === 0) {
+      element.setAttribute('color', '#51d312');
+    } else {
+      element.setAttribute('color', 'black');
+    }
+
+    colorChangeCount++;
+
+    if (colorChangeCount === totalChanges * 2) {
+      clearInterval(colorChangeInterval);
+    }
+  }, intervalDuration);
+}
+
 function startGame() {
   const scene = document.querySelector('a-scene');
   const startButton = document.querySelector('#startButton');
@@ -70,7 +89,7 @@ function startGame() {
     loop: false,
   });
 
-  scene.setAttribute('spawn-targets', '');
+  scene.setAttribute('spawn-blue-targets', '');
   scene.setAttribute('spawn-hp', '');
   scene.setAttribute('bullet', '');
   turretBlueAnimation();
@@ -84,6 +103,7 @@ function turretRedShooting() {
   const comboBar = document.querySelector('#combo-bar');
   const scoreBar = document.querySelector('#score-bar');
   const scoreFinishBarText = document.querySelector('#score-bar-finish-text');
+  const colorChangingBox = document.querySelector('#comboIndecator');
   const laserShootSound = document.querySelector('#redLaserShootSound');
   const laserReloadSound = document.querySelector('#redLaserReloadSound');
   const velocity = 30;
@@ -149,6 +169,7 @@ function turretRedShooting() {
       }
       if (hitCounter % 5 == 0) {
         health += 10;
+        animateColorChange(colorChangingBox, 3, 1000);
         changeScale(comboBar, 0);
       }
       scoreBar.setAttribute('text', {
@@ -237,6 +258,7 @@ function turretBlueShooting() {
   const comboBar = document.querySelector('#combo-bar');
   const scoreBar = document.querySelector('#score-bar');
   const scoreFinishBarText = document.querySelector('#score-bar-finish-text');
+  const colorChangingBox = document.querySelector('#comboIndecator');
   const velocity = 30;
 
   const camera = document.querySelector('a-camera');
@@ -309,6 +331,7 @@ function turretBlueShooting() {
       }
       if (hitCounter % 5 == 0) {
         health += 10;
+        animateColorChange(colorChangingBox, 3, 1000);
         changeScale(comboBar, 0);
       }
       scoreBar.setAttribute('text', {

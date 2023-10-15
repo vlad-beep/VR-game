@@ -13,8 +13,8 @@ function gameOver() {
   clearInterval(hpSpawnInterval);
   clearInterval(blueTurretShootingInteval);
   clearInterval(redTurretShootingInteval);
-  clearInterval(targetSpawnInterval);
-  scene.removeAttribute('spawn-targets');
+  clearInterval(blueTargetSpawnInterval);
+  scene.removeAttribute('spawn-blue-targets');
   scene.removeAttribute('spawn-hp');
   scene.removeAttribute('bullet');
 

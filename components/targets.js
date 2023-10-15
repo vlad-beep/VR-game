@@ -1,5 +1,5 @@
-let targetSpawnInterval;
-AFRAME.registerComponent('spawn-targets', {
+let blueTargetSpawnInterval;
+AFRAME.registerComponent('spawn-blue-targets', {
   init: function () {
     const scene = this.el;
     const maxTargets = 30;
@@ -90,6 +90,6 @@ AFRAME.registerComponent('spawn-targets', {
       }
     }
     createFormation();
-    targetSpawnInterval = setInterval(createFormation, 3000);
+    blueTargetSpawnInterval = setInterval(createFormation, 3000);
   },
 });
