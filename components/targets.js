@@ -1,4 +1,5 @@
 let blueTargetSpawnInterval;
+
 AFRAME.registerComponent('spawn-blue-targets', {
   init: function () {
     const scene = this.el;
