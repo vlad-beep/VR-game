@@ -6,6 +6,7 @@ let scoreCounter = 0;
 let attributeNumber = 0;
 let turretAnimationTriggered;
 let colorChangeCount = 0;
+
 AFRAME.registerComponent('bullet', {
   schema: {
     velocity: { type: 'vec3', default: { x: 0, y: 0, z: 0 } },
@@ -67,6 +68,7 @@ function startGame() {
   const comboBar = document.querySelector('#combo-bar');
   const scoreFinishBar = document.querySelector('#score-bar-finish');
   turretAnimationTriggered = false;
+
   let gameOverSound = document.querySelector('#gameOverSound');
   gameOverSound.components.sound.stopSound();
   let Soundtrack = document.querySelector('#Soundtrack');
@@ -152,7 +154,7 @@ function turretRedShooting() {
   if (intersects.length > 0.1) {
     const target = intersects[0].object.el;
 
-    if (target.id.startsWith('target')) {
+    if (target.id.startsWith('redTarget')) {
       hitCounter++;
       scoreCounter += hitCounter * 100;
       if (hitCounter < 10) {
@@ -235,10 +237,31 @@ function turretRedShooting() {
         }
         hpSound.components.sound.playSound();
       }, timeToDisappear * 1000);
+    } else if (target.id.startsWith('blueTarget')) {
+      const targetId = target.id;
+      const targetEntity = document.querySelector(`#${targetId}`);
+      const targetPosition = new THREE.Vector3();
+      target.object3D.getWorldPosition(targetPosition);
+      const distance = cameraPosition.distanceTo(targetPosition);
+      const timeToDisappear = distance / velocity;
+      setTimeout(() => {
+        if (bulletRed && bulletRed.parentNode) {
+          bulletRed.parentNode.removeChild(bulletRed);
+        }
+        if (target && target.parentNode) {
+          target.parentNode.removeChild(target);
+        }
+        impactSound.components.sound.playSound();
+      }, timeToDisappear * 1000);
+      hitCounter = 0;
+      missSound.components.sound.playSound();
+      health -= 5;
+      changeScale(comboBar, 0);
+      console.log('Попали не в ту мишень');
     } else {
       hitCounter = 0;
       missSound.components.sound.playSound();
-      health -= 20;
+      health -= 10;
       changeScale(comboBar, 0);
       console.log('Промах');
     }
@@ -246,7 +269,6 @@ function turretRedShooting() {
   checkHp(health, maxHealth);
 
   setTimeout(() => {
-    console.log('Удаляю пулю');
     if (bulletRed && bulletRed.parentNode) {
       bulletRed.parentNode.removeChild(bulletRed);
     }
@@ -311,7 +333,7 @@ function turretBlueShooting() {
   if (intersects.length > 0.1) {
     const target = intersects[0].object.el;
 
-    if (target.id.startsWith('target')) {
+    if (target.id.startsWith('blueTarget')) {
       hitCounter++;
       scoreCounter += hitCounter * 100;
       if (hitCounter < 10) {
@@ -321,7 +343,9 @@ function turretBlueShooting() {
         attributeNumber = `#number${hitCounter}`;
       } else if (hitCounter == 10 && !turretAnimationTriggered) {
         turretRedAnimation();
-        redTurretShootingInteval = setInterval(turretRedShooting, 4800);
+        clearInterval(blueTargetSpawnInterval);
+        scene.setAttribute('spawn-red-targets', '');
+        redTurretShootingInteval = setInterval(turretRedShooting, 4700);
         turretAnimationTriggered = true;
         attributeNumber = `#number${hitCounter}`;
         hitCounter = 0;
@@ -397,10 +421,32 @@ function turretBlueShooting() {
         }
         hpSound.components.sound.playSound();
       }, timeToDisappear * 1000);
+    } else if (target.id.startsWith('redTarget')) {
+      const targetId = target.id;
+      const targetEntity = document.querySelector(`#${targetId}`);
+      const targetPosition = new THREE.Vector3();
+      target.object3D.getWorldPosition(targetPosition);
+      const distance = cameraPosition.distanceTo(targetPosition);
+      const timeToDisappear = distance / velocity;
+      setTimeout(() => {
+        if (bullet && bullet.parentNode) {
+          bullet.parentNode.removeChild(bullet);
+        }
+        if (target && target.parentNode) {
+          target.parentNode.removeChild(target);
+        }
+        impactSound.components.sound.playSound();
+      }, timeToDisappear * 1000);
+      hitCounter = 0;
+
+      missSound.components.sound.playSound();
+      health -= 5;
+      changeScale(comboBar, 0);
+      console.log('Попали не в ту мишень');
     } else {
       hitCounter = 0;
       missSound.components.sound.playSound();
-      health -= 20;
+      health -= 10;
       changeScale(comboBar, 0);
       console.log('Промах');
     }

@@ -14,7 +14,9 @@ function gameOver() {
   clearInterval(blueTurretShootingInteval);
   clearInterval(redTurretShootingInteval);
   clearInterval(blueTargetSpawnInterval);
+  clearInterval(redTargetSpawnInterval);
   scene.removeAttribute('spawn-blue-targets');
+  scene.removeAttribute('spawn-red-targets');
   scene.removeAttribute('spawn-hp');
   scene.removeAttribute('bullet');
 

@@ -18,29 +18,50 @@ let hpSpawnInterval;
 AFRAME.registerComponent('spawn-hp', {
   init: function () {
     const scene = this.el;
+    const spacing = 2;
     let hpCounter = 0;
+
+    function isPositionOccupied(x, y) {
+      const targets = scene.querySelectorAll('[data-raycastable]');
+      for (const target of targets) {
+        const position = target.getAttribute('position');
+        const targetX = position.x;
+        const targetY = position.y;
+        let distance = Math.sqrt(Math.pow(x - targetX, 2) + Math.pow(y - targetY, 2));
+
+        if (distance < spacing) {
+          return true;
+        }
+      }
+      return false;
+    }
 
     function spawnHP() {
       const currentHpCounter = hpCounter;
       const hp = document.createElement('a-entity');
+      do {
+        randomX = Math.random() * 10 - 5;
+        randomY = Math.random() * 10 - 5;
+      } while (isPositionOccupied(randomX, randomY));
       hp.setAttribute('radius', '0.1');
+      hp.setAttribute('rotation', '45 0 0');
       hp.setAttribute('position', {
-        x: Math.random() * 10 - 5,
-        y: Math.random() * 5,
+        x: randomX,
+        y: randomY,
         z: -15,
       });
 
       hp.setAttribute('scale', '0 0 0');
       hp.setAttribute('animation__scale', {
         property: 'scale',
-        to: '0.8 0.8 0.8',
+        to: '0.002 0.002 0.002',
         dur: 1000,
         easing: 'easeOutElastic',
       });
       hp.setAttribute('animation__rotation', {
         property: 'rotation',
-        to: '0 360 0',
-        dur: 3000,
+        to: '90 360 0',
+        dur: 5000,
         loop: true,
       });
 

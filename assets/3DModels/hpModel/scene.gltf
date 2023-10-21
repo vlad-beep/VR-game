@@ -3,244 +3,135 @@
     {
       "bufferView": 2,
       "componentType": 5126,
-      "count": 1902,
+      "count": 782,
       "max": [
-        57.86566162109375,
-        49.9488639831543,
-        25.892803192138672
+        300.0,
+        300.0,
+        112.23346710205078
       ],
       "min": [
-        -57.86566162109375,
-        -49.9488639831543,
-        -25.892803192138672
+        -300.0,
+        -300.0,
+        -112.23346710205078
       ],
       "type": "VEC3"
     },
     {
       "bufferView": 2,
-      "byteOffset": 22824,
+      "byteOffset": 9384,
       "componentType": 5126,
-      "count": 1902,
+      "count": 782,
       "max": [
-        0.9978087544441223,
-        0.9911590814590454,
-        0.9984098076820374
+        0.9980282187461853,
+        0.9997960925102234,
+        0.9999984502792358
       ],
       "min": [
-        -0.9993493556976318,
-        -0.993847668170929,
-        -0.9999495148658752
+        -0.9980282187461853,
+        -0.9997960925102234,
+        -0.9999984502792358
       ],
       "type": "VEC3"
     },
     {
       "bufferView": 3,
       "componentType": 5126,
-      "count": 1902,
+      "count": 782,
       "max": [
-        0.9999473690986633,
-        0.9998716711997986,
-        0.9685015678405762,
+        0.9999992251396179,
+        0.9992194175720215,
+        0.9997376799583435,
         1.0
       ],
       "min": [
-        -0.7124358415603638,
-        -0.9475277066230774,
-        -0.9906792640686035,
-        1.0
+        -0.9960744380950928,
+        -0.996077299118042,
+        -0.9997376799583435,
+        -1.0
       ],
       "type": "VEC4"
     },
     {
       "bufferView": 1,
       "componentType": 5126,
-      "count": 1902,
+      "count": 782,
       "max": [
-        0.8016999959945679,
-        0.9980400204658508
+        0.9927780032157898,
+        0.9999520182609558
       ],
       "min": [
-        0.0019499999471008778,
-        0.0019499999471008778
+        0.0,
+        0.0
       ],
       "type": "VEC2"
     },
     {
       "bufferView": 0,
       "componentType": 5125,
-      "count": 1902,
+      "count": 3252,
       "type": "SCALAR"
-    },
-    {
-      "bufferView": 4,
-      "componentType": 5126,
-      "count": 118,
-      "max": [
-        2.5
-      ],
-      "min": [
-        0.0416666679084301
-      ],
-      "type": "SCALAR"
-    },
-    {
-      "bufferView": 5,
-      "componentType": 5126,
-      "count": 118,
-      "max": [
-        0.00015293121396098286,
-        0.8390416502952576,
-        -0.0008990573696792126
-      ],
-      "min": [
-        0.00015293121396098286,
-        0.5344893932342529,
-        -0.0008990573696792126
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 4,
-      "byteOffset": 472,
-      "componentType": 5126,
-      "count": 118,
-      "max": [
-        2.5
-      ],
-      "min": [
-        0.0416666679084301
-      ],
-      "type": "SCALAR"
-    },
-    {
-      "bufferView": 6,
-      "componentType": 5126,
-      "count": 118,
-      "max": [
-        8.348370624772675e-17,
-        0.9999858140945435,
-        8.348370624772675e-17,
-        1.0
-      ],
-      "min": [
-        -8.658793641562595e-17,
-        -0.8477343916893005,
-        -8.658793641562595e-17,
-        -0.4938390254974365
-      ],
-      "type": "VEC4"
-    }
-  ],
-  "animations": [
-    {
-      "channels": [
-        {
-          "sampler": 0,
-          "target": {
-            "node": 4,
-            "path": "translation"
-          }
-        },
-        {
-          "sampler": 1,
-          "target": {
-            "node": 4,
-            "path": "rotation"
-          }
-        }
-      ],
-      "name": "Take 001",
-      "samplers": [
-        {
-          "input": 5,
-          "interpolation": "LINEAR",
-          "output": 6
-        },
-        {
-          "input": 7,
-          "interpolation": "LINEAR",
-          "output": 8
-        }
-      ]
     }
   ],
   "asset": {
     "extras": {
-      "author": "Talaei (https://sketchfab.com/habedi)",
+      "author": "FeelsBadMan (https://sketchfab.com/FeelsBadMan)",
       "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
-      "source": "https://sketchfab.com/3d-models/crystal-heart-8e8515a0834b4c1e9e477ce0f392a90c",
-      "title": "Crystal Heart"
+      "source": "https://sketchfab.com/3d-models/health-pack-02b68ccdecec4d12813805b8c8865bcd",
+      "title": "Health Pack"
     },
-    "generator": "Sketchfab-12.67.0",
+    "generator": "Sketchfab-12.65.0",
     "version": "2.0"
   },
   "bufferViews": [
     {
       "buffer": 0,
-      "byteLength": 7608,
+      "byteLength": 13008,
       "name": "floatBufferViews",
       "target": 34963
     },
     {
       "buffer": 0,
-      "byteLength": 15216,
-      "byteOffset": 7608,
+      "byteLength": 6256,
+      "byteOffset": 13008,
       "byteStride": 8,
       "name": "floatBufferViews",
       "target": 34962
     },
     {
       "buffer": 0,
-      "byteLength": 45648,
-      "byteOffset": 22824,
+      "byteLength": 18768,
+      "byteOffset": 19264,
       "byteStride": 12,
       "name": "floatBufferViews",
       "target": 34962
     },
     {
       "buffer": 0,
-      "byteLength": 30432,
-      "byteOffset": 68472,
+      "byteLength": 12512,
+      "byteOffset": 38032,
       "byteStride": 16,
       "name": "floatBufferViews",
       "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 944,
-      "byteOffset": 98904,
-      "name": "floatBufferViews"
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1416,
-      "byteOffset": 99848,
-      "byteStride": 12,
-      "name": "floatBufferViews"
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1888,
-      "byteOffset": 101264,
-      "byteStride": 16,
-      "name": "floatBufferViews"
     }
   ],
   "buffers": [
     {
-      "byteLength": 103152,
+      "byteLength": 50544,
       "uri": "scene.bin"
     }
   ],
   "images": [
     {
-      "uri": "textures/Crystal_Heart_Mat_baseColor.png"
+      "uri": "textures/lambert1_baseColor.png"
     },
     {
-      "uri": "textures/Crystal_Heart_Mat_metallicRoughness.png"
+      "uri": "textures/lambert1_metallicRoughness.png"
     },
     {
-      "uri": "textures/Crystal_Heart_Mat_normal.png"
+      "uri": "textures/lambert1_emissive.png"
+    },
+    {
+      "uri": "textures/lambert1_normal.png"
     }
   ],
   "materials": [
@@ -252,16 +143,20 @@
         1.0
       ],
       "emissiveTexture": {
-        "index": 0
-      },
-      "name": "Crystal_Heart_Mat",
-      "normalTexture": {
         "index": 2
+      },
+      "name": "lambert1",
+      "normalTexture": {
+        "index": 3
+      },
+      "occlusionTexture": {
+        "index": 1
       },
       "pbrMetallicRoughness": {
         "baseColorTexture": {
           "index": 0
         },
+        "metallicFactor": 0.75,
         "metallicRoughnessTexture": {
           "index": 1
         }
@@ -270,7 +165,7 @@
   ],
   "meshes": [
     {
-      "name": "Crystal_Heart_Crystal_Heart_Mat_0",
+      "name": "Object_0",
       "primitives": [
         {
           "attributes": {
@@ -315,57 +210,11 @@
       "children": [
         2
       ],
-      "matrix": [
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0,
-        0.0,
-        0.0,
-        -1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0
-      ],
-      "name": "Crystal Heart.fbx"
-    },
-    {
-      "children": [
-        3
-      ],
-      "name": "Object_2"
-    },
-    {
-      "children": [
-        4
-      ],
-      "name": "RootNode"
-    },
-    {
-      "children": [
-        5
-      ],
-      "name": "Crystal_Heart",
-      "scale": [
-        0.009999999776482582,
-        0.009999999776482582,
-        0.009999999776482582
-      ],
-      "translation": [
-        0.00015293121396098286,
-        0.8390416502952576,
-        -0.0008990573696792126
-      ]
+      "name": "health_pack.Obj.cleaner.materialmerger.gles"
     },
     {
       "mesh": 0,
-      "name": "Crystal_Heart_Crystal_Heart_Mat_0"
+      "name": "Object_2"
     }
   ],
   "samplers": [
@@ -397,6 +246,10 @@
     {
       "sampler": 0,
       "source": 2
+    },
+    {
+      "sampler": 0,
+      "source": 3
     }
   ]
 }
