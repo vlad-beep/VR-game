@@ -7,6 +7,7 @@
     <script src="components/targets.js"></script>
     <script src="components/health.js"></script>
     <script src="components/gameOver.js"></script>
+    <script src="components/boss.js"></script>
     <script>
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(function (stream) {
@@ -32,6 +33,7 @@
         <a-assets>
             <a-asset-item id="blueTarget" src="assets/3DModels/blue_target/scene.gltf"></a-asset-item>
             <a-asset-item id="redTarget" src="assets/3DModels/red_target/scene.gltf"></a-asset-item>
+            <a-asset-item id="boss" src="assets/3DModels/boss/scene.gltf"></a-asset-item>
             <a-asset-item id="effect" src="assets/3DModels/cyber_spore/scene.gltf"></a-asset-item>
             <a-asset-item id="hpModel" src="assets/3DModels/hpModel/scene.gltf"></a-asset-item>
             <a-asset-item id="cockpitModel" src="assets/3DModels/cockpit/scene.gltf"></a-asset-item>
@@ -59,6 +61,8 @@
                 volume="0.5" loop="false"></a-sound>
             <a-sound id="gameOverSound" src="assets/sound/hotline_miami_15. El Huervo - Daisuke.mp3" autoplay="false"
                 volume="0.5" loop="false"></a-sound>
+            <a-sound id="bossSound" src="assets/sound/bossSound.mp3" autoplay="false" volume="0.5"
+                loop="false"></a-sound>
             <a-sound id="impactSound" src="assets/sound/pryamoe-popadanie-v-jivuyu-mishen.mp3" autoplay="false"
                 volume="1" loop="false"></a-sound>
             <a-sound id="missSound" src="assets/sound/vyibor-nujnoy-igrovoy-kategorii.mp3" autoplay="false" volume="3"
@@ -83,7 +87,6 @@
                     rotation="180 0 0"></a-light>
                 <a-plane width="0.8" height="0.8" position="0 0.35 0.5" color="black" rotation="-100 0 0"></a-plane>
             </a-entity>
-
             <a-entity id="turretBlue" gltf-model='#turret' scale="0.1 0.1 0.1" position="0.652 -0.86 -0.213"
                 rotation="-10 100 5"> <a-sphere id="shootingSpotBlue" color="blue" scale="0.1 0.1 0.1"
                     position="3.536 5.525 0.025"></a-sphere> <a-sound id="laserShootSound"
@@ -101,7 +104,7 @@
             <a-entity geometry="primitive: ring" scale="0.06 0.06 0.06" position="0 0 -3"
                 material="color: black; shader: flat"></a-entity>
         </a-camera>
-
+        <!-- <a-entity id="bos" gltf-model='#boss' rotation="0 0 0" position="0 1 -10"></a-entity> -->
         <a-entity id="gameOver" visible="false"
             text="value: GAME OVER; align: center; font: digitalicg-msdf.json; color: #fff; negate: true"
             scale="25 17 17" position="0 3 -4" rotation="10 0 0"></a-entity>>

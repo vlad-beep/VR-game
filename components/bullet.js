@@ -128,12 +128,18 @@ function turretRedShooting() {
   const direction = new THREE.Vector3();
   direction.subVectors(cursorPosition, cameraPosition).normalize();
 
-  const bulletRed = document.createElement('a-sphere');
-  bulletRed.setAttribute('radius', '0.05');
-  bulletRed.setAttribute('position', turretPositionRed);
-  bulletRed.setAttribute('color', 'red');
-  bulletRed.setAttribute('opacity', '0.7');
-  bulletRed.setAttribute('bullet', '');
+  const bulletRed = document.createElement('a-entity');
+  const lineEndPosition = {
+    x: turretPositionRed.x + direction.x,
+    y: turretPositionRed.y + direction.y,
+    z: turretPositionRed.z + direction.z,
+  };
+  bulletRed.setAttribute('line', {
+    start: `${turretPositionRed.x} ${turretPositionRed.y} ${turretPositionRed.z}`,
+    end: `${lineEndPosition.x} ${lineEndPosition.y} ${lineEndPosition.z}`,
+    color: 'red',
+  });
+  bulletRed.setAttribute('opacity', '0.8');
   bulletRed.setAttribute('raycaster', {
     direction: direction,
     far: 1,
@@ -143,9 +149,10 @@ function turretRedShooting() {
     'bullet',
     `velocity: ${direction.x * velocity} ${direction.y * velocity} ${direction.z * velocity}`,
   );
+  scene.appendChild(bulletRed);
   laserShootSound.components.sound.playSound();
   laserReloadSound.components.sound.playSound();
-  scene.appendChild(bulletRed);
+
   turretRedRecoil();
 
   const raycaster = new THREE.Raycaster(cameraPosition, direction);
@@ -281,7 +288,7 @@ function turretBlueShooting() {
   const scoreBar = document.querySelector('#score-bar');
   const scoreFinishBarText = document.querySelector('#score-bar-finish-text');
   const colorChangingBox = document.querySelector('#comboIndecator');
-  const velocity = 30;
+  const velocity = 25;
 
   const camera = document.querySelector('a-camera');
   const cursor = document.querySelector('[cursor]');
@@ -305,12 +312,19 @@ function turretBlueShooting() {
 
   const direction = new THREE.Vector3();
   direction.subVectors(cursorPosition, cameraPosition).normalize();
-  const bullet = document.createElement('a-sphere');
-  bullet.setAttribute('radius', '0.05');
-  bullet.setAttribute('position', turretPosition);
-  bullet.setAttribute('color', '#00FFFF');
-  bullet.setAttribute('opacity', '0.7');
-  bullet.setAttribute('bullet', '');
+
+  const bullet = document.createElement('a-entity');
+  const lineEndPosition = {
+    x: turretPosition.x + direction.x,
+    y: turretPosition.y + direction.y,
+    z: turretPosition.z + direction.z,
+  };
+  bullet.setAttribute('line', {
+    start: `${turretPosition.x} ${turretPosition.y} ${turretPosition.z}`,
+    end: `${lineEndPosition.x} ${lineEndPosition.y} ${lineEndPosition.z}`,
+    color: '#00FFFF',
+  });
+  bullet.setAttribute('opacity', '0.8');
   bullet.setAttribute('raycaster', {
     direction: direction,
     far: 1,
@@ -320,7 +334,6 @@ function turretBlueShooting() {
     'bullet',
     `velocity: ${direction.x * velocity} ${direction.y * velocity} ${direction.z * velocity}`,
   );
-
   scene.appendChild(bullet);
   turretBlueRecoil();
 
@@ -329,7 +342,6 @@ function turretBlueShooting() {
 
   const raycaster = new THREE.Raycaster(cameraPosition, direction);
   const intersects = raycaster.intersectObject(scene.object3D, true);
-
   if (intersects.length > 0.1) {
     const target = intersects[0].object.el;
 
@@ -358,12 +370,14 @@ function turretBlueShooting() {
         animateColorChange(colorChangingBox, 3, 1000);
         changeScale(comboBar, 0);
       }
+
       scoreBar.setAttribute('text', {
         value: `${scoreCounter}`,
       });
       scoreFinishBarText.setAttribute('text', {
         value: `${scoreCounter}`,
       });
+
       const number = document.createElement('a-entity');
       const targetId = target.id;
       const targetEntity = document.querySelector(`#${targetId}`);
@@ -457,4 +471,5 @@ function turretBlueShooting() {
       bullet.parentNode.removeChild(bullet);
     }
   }, 2000);
+  bossAppearance();
 }
