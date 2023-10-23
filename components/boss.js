@@ -1,5 +1,5 @@
 function bossAppearance() {
-  if (scoreCounter > 5000 && !bossTriggered) {
+  if (scoreCounter > 15000 && !bossTriggered) {
     const scene = document.querySelector('a-scene');
     const healthBar = document.querySelector('#health-bar-container');
     healthBar.style.display = 'block';
@@ -116,7 +116,7 @@ AFRAME.registerComponent('move-boss', {
 
 AFRAME.registerComponent('boss-look-at-player', {
   init: function () {
-    const player = document.querySelector('a-camera'); // Знаходимо гравця за його ID (припустимо, що ID гравця - це "player").
+    const player = document.querySelector('a-camera'); // Знаходимо гравця за його ID
     const boss = this.el; // Знаходимо боса, якому будемо додавати цей компонент.
 
     // Оголошуємо функцію, яка буде викликатися для відстеження гравця та обертання боса до нього.

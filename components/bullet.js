@@ -298,6 +298,7 @@ function turretBlueShooting() {
   const laserShootSound = document.querySelector('#laserShootSound');
   const laserReloadSound = document.querySelector('#laserReloadSound');
   const impactSound = document.querySelector('#impactSound');
+  const bossImpactSound = document.querySelector('#bossImpactSound');
   const missSound = document.querySelector('#missSound');
   const hpSound = document.querySelector('#hpSound');
 
@@ -464,7 +465,7 @@ function turretBlueShooting() {
         if (bullet && bullet.parentNode) {
           bullet.parentNode.removeChild(bullet);
         }
-        impactSound.components.sound.playSound();
+        bossImpactSound.components.sound.playSound();
       }, timeToDisappear * 1000);
     } else {
       hitCounter = 0;
