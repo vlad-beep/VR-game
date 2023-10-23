@@ -1,0 +1,20 @@
+.health-bar-container {
+    position: absolute;
+    top: 20px; /* Расстояние от верхнего края экрана */
+    left: 50%;
+    transform: translateX(-50%); /* Центрирование по горизонтали */
+    width: 600px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 2px solid #fff;
+    display: none;
+    z-index: 1;
+}
+
+.health-bar {
+    height: 100%;
+    width: 100%;
+    background-color: rgb(168, 32, 8); /* Зелений колір для повного здоров'я. */
+    transition: width 0.5s; /* Анімація зміни ширини. */
+    z-index: 2;
+}

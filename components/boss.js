@@ -1,17 +1,24 @@
 function bossAppearance() {
-  if (scoreCounter > 15000) {
+  if (scoreCounter > 5000 && !bossTriggered) {
     const scene = document.querySelector('a-scene');
+    const healthBar = document.querySelector('#health-bar-container');
+    healthBar.style.display = 'block';
+    healthPercentage = 100;
+    bossTriggered = true;
     let Soundtrack = document.querySelector('#Soundtrack');
     Soundtrack.components.sound.stopSound();
     const bossSound = document.querySelector('#bossSound');
     bossSound.components.sound.playSound();
+
     clearInterval(blueTurretShootingInteval);
     clearInterval(redTurretShootingInteval);
     clearInterval(blueTargetSpawnInterval);
     clearInterval(redTargetSpawnInterval);
     clearInterval(hpSpawnInterval);
+
     scene.removeAttribute('spawn-blue-targets');
     scene.removeAttribute('spawn-red-targets');
+
     const targets = scene.querySelectorAll('[data-raycastable]');
     targets.forEach((target) => {
       target.setAttribute('animation__position', {
@@ -28,8 +35,33 @@ function bossAppearance() {
     });
     setTimeout(() => {
       scene.setAttribute('spawn-boss', '');
+      blueTurretShootingInteval = setInterval(turretBlueShooting, 1200);
     }, 1000);
   }
+}
+
+function updateHealthBar(healthPercentage) {
+  const healthBarContainer = document.querySelector('#health-bar-container');
+  const healthBar = document.querySelector('#health-bar');
+  const scene = document.querySelector('a-scene');
+  if (healthPercentage <= 0) {
+    console.log('rggrgrgr');
+    healthBar.style.width = 0 + '%';
+    healthBarContainer.style.display = 'none';
+    scene.removeAttribute('spawn-boss');
+    const targets = scene.querySelectorAll('[data-raycastable]');
+    targets.forEach((target) => {
+      scene.removeChild(target);
+      gameOver();
+    });
+  } else {
+    healthBar.style.width = healthPercentage + '%';
+  }
+}
+
+function hitBoss() {
+  healthPercentage -= 5;
+  updateHealthBar(healthPercentage);
 }
 
 AFRAME.registerComponent('spawn-boss', {
@@ -113,7 +145,7 @@ AFRAME.registerComponent('boss-look-at-player', {
     };
 
     // Викликаємо функцію для відстеження гравця та обертання боса кожні 100 мілісекунд (10 разів на секунду).
-    this.intervalId = setInterval(lookAtPlayer, 50);
+    this.intervalId = setInterval(lookAtPlayer, 200);
   },
 
   remove: function () {

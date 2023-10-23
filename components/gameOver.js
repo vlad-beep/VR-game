@@ -4,7 +4,8 @@ function gameOver() {
   const startButton = document.querySelector('#startButton');
   const startButtonText = document.querySelector('#startButtonText');
   const scoreFinishBar = document.querySelector('#score-bar-finish');
-
+  let bossSound = document.querySelector('#bossSound');
+  bossSound.components.sound.stopSound();
   let Soundtrack = document.querySelector('#Soundtrack');
   Soundtrack.components.sound.stopSound();
   let gameOverSound = document.querySelector('#gameOverSound');
@@ -30,6 +31,7 @@ function gameOver() {
     scene.removeChild(target);
   });
   health = maxHealth;
+  scoreCounter = 0;
   gameOver.setAttribute('visible', 'true');
   gameOver.setAttribute('animation__move', {
     property: 'position',

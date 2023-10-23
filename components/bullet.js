@@ -5,7 +5,9 @@ let hitCounter = 0;
 let scoreCounter = 0;
 let attributeNumber = 0;
 let turretAnimationTriggered;
+let bossTriggered;
 let colorChangeCount = 0;
+let healthPercentage = 100;
 
 AFRAME.registerComponent('bullet', {
   schema: {
@@ -44,7 +46,6 @@ function changeScale(object, value) {
 function animateColorChange(element, totalChanges, duration) {
   let colorChangeCount = 0;
   const intervalDuration = duration / (totalChanges * 2);
-
   const colorChangeInterval = setInterval(() => {
     if (colorChangeCount % 2 === 0) {
       element.setAttribute('color', '#51d312');
@@ -67,8 +68,9 @@ function startGame() {
   const hpBar = document.querySelector('#hp-bar');
   const comboBar = document.querySelector('#combo-bar');
   const scoreFinishBar = document.querySelector('#score-bar-finish');
+  const scoreBar = document.querySelector('#score-bar');
   turretAnimationTriggered = false;
-
+  bossTriggered = false;
   let gameOverSound = document.querySelector('#gameOverSound');
   gameOverSound.components.sound.stopSound();
   let Soundtrack = document.querySelector('#Soundtrack');
@@ -76,6 +78,9 @@ function startGame() {
 
   hpBar.setAttribute('scale', `1 1 1`);
   comboBar.setAttribute('scale', `0 1 1`);
+  scoreBar.setAttribute('text', {
+    value: `${scoreCounter}`,
+  });
 
   startButton.setAttribute('position', '0 0 21');
   startButton.setAttribute('visible', 'false');
@@ -188,8 +193,7 @@ function turretRedShooting() {
         value: `${scoreCounter}`,
       });
       const number = document.createElement('a-entity');
-      const targetId = target.id;
-      const targetEntity = document.querySelector(`#${targetId}`);
+
       const targetPosition = new THREE.Vector3();
       target.object3D.getWorldPosition(targetPosition);
       const distance = cameraPosition.distanceTo(targetPosition);
@@ -227,8 +231,6 @@ function turretRedShooting() {
         impactSound.components.sound.playSound();
       }, timeToDisappear * 1000);
     } else if (target.id.startsWith('hp')) {
-      const targetId = target.id;
-      const targetEntity = document.querySelector(`#${targetId}`);
       const targetPosition = new THREE.Vector3();
       target.object3D.getWorldPosition(targetPosition);
       const distance = cameraPosition.distanceTo(targetPosition);
@@ -245,8 +247,6 @@ function turretRedShooting() {
         hpSound.components.sound.playSound();
       }, timeToDisappear * 1000);
     } else if (target.id.startsWith('blueTarget')) {
-      const targetId = target.id;
-      const targetEntity = document.querySelector(`#${targetId}`);
       const targetPosition = new THREE.Vector3();
       target.object3D.getWorldPosition(targetPosition);
       const distance = cameraPosition.distanceTo(targetPosition);
@@ -265,6 +265,8 @@ function turretRedShooting() {
       health -= 5;
       changeScale(comboBar, 0);
       console.log('Попали не в ту мишень');
+    } else if (target.id.startsWith('boss')) {
+      hitBoss();
     } else {
       hitCounter = 0;
       missSound.components.sound.playSound();
@@ -288,7 +290,7 @@ function turretBlueShooting() {
   const scoreBar = document.querySelector('#score-bar');
   const scoreFinishBarText = document.querySelector('#score-bar-finish-text');
   const colorChangingBox = document.querySelector('#comboIndecator');
-  const velocity = 25;
+  const velocity = 40;
 
   const camera = document.querySelector('a-camera');
   const cursor = document.querySelector('[cursor]');
@@ -379,8 +381,7 @@ function turretBlueShooting() {
       });
 
       const number = document.createElement('a-entity');
-      const targetId = target.id;
-      const targetEntity = document.querySelector(`#${targetId}`);
+
       const targetPosition = new THREE.Vector3();
       target.object3D.getWorldPosition(targetPosition);
       const distance = cameraPosition.distanceTo(targetPosition);
@@ -418,8 +419,6 @@ function turretBlueShooting() {
         impactSound.components.sound.playSound();
       }, timeToDisappear * 1000);
     } else if (target.id.startsWith('hp')) {
-      const targetId = target.id;
-      const targetEntity = document.querySelector(`#${targetId}`);
       const targetPosition = new THREE.Vector3();
       target.object3D.getWorldPosition(targetPosition);
       const distance = cameraPosition.distanceTo(targetPosition);
@@ -436,8 +435,6 @@ function turretBlueShooting() {
         hpSound.components.sound.playSound();
       }, timeToDisappear * 1000);
     } else if (target.id.startsWith('redTarget')) {
-      const targetId = target.id;
-      const targetEntity = document.querySelector(`#${targetId}`);
       const targetPosition = new THREE.Vector3();
       target.object3D.getWorldPosition(targetPosition);
       const distance = cameraPosition.distanceTo(targetPosition);
@@ -457,6 +454,18 @@ function turretBlueShooting() {
       health -= 5;
       changeScale(comboBar, 0);
       console.log('Попали не в ту мишень');
+    } else if (target.id.startsWith('boss')) {
+      hitBoss();
+      const targetPosition = new THREE.Vector3();
+      target.object3D.getWorldPosition(targetPosition);
+      const distance = cameraPosition.distanceTo(targetPosition);
+      const timeToDisappear = distance / velocity;
+      setTimeout(() => {
+        if (bullet && bullet.parentNode) {
+          bullet.parentNode.removeChild(bullet);
+        }
+        impactSound.components.sound.playSound();
+      }, timeToDisappear * 1000);
     } else {
       hitCounter = 0;
       missSound.components.sound.playSound();
