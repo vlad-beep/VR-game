@@ -76,7 +76,7 @@ AFRAME.registerComponent('spawn-boss', {
         y: 2,
         z: -18,
       });
-      boss.setAttribute('scale', '0.3 0.3 0.3');
+      boss.setAttribute('scale', '1.5 1.5 1.5');
       boss.setAttribute('gltf-model', '#boss');
       boss.setAttribute('data-raycastable', '');
       boss.setAttribute('id', 'boss');
@@ -130,8 +130,8 @@ AFRAME.registerComponent('boss-look-at-player', {
       direction.normalize();
 
       // Отримаємо кути обертання боса для вигляду на гравця (в радіанах).
-      const pitch = Math.asin(direction.y);
-      const yaw = Math.atan2(-direction.x, -direction.z);
+      const pitch = Math.asin(-direction.y);
+      const yaw = Math.atan2(direction.x, direction.z);
 
       // Перетворимо кути в градуси.
       const pitchDegrees = THREE.Math.radToDeg(pitch);

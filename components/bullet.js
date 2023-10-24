@@ -75,7 +75,7 @@ function startGame() {
   gameOverSound.components.sound.stopSound();
   let Soundtrack = document.querySelector('#Soundtrack');
   Soundtrack.components.sound.playSound();
-
+  hitCounter = 0;
   hpBar.setAttribute('scale', `1 1 1`);
   comboBar.setAttribute('scale', `0 1 1`);
   scoreBar.setAttribute('text', {

@@ -34,7 +34,7 @@ function gameOver() {
   });
   health = maxHealth;
   scoreCounter = 0;
-
+  gameOver.setAttribute('text', { value: 'GAME OVER' });
   gameOver.setAttribute('visible', 'true');
   gameOver.setAttribute('animation__move', {
     property: 'position',
