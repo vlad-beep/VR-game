@@ -1,5 +1,5 @@
 function bossAppearance() {
-  if (scoreCounter > 10000 && !bossTriggered) {
+  if (scoreCounter > 15000 && !bossTriggered) {
     const scene = document.querySelector('a-scene');
     const healthBar = document.querySelector('#health-bar-container');
     healthBar.style.display = 'block';
