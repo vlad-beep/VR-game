@@ -104,13 +104,49 @@ function startGame() {
   blueTurretShootingInteval = setInterval(turretBlueShooting, 1200);
 }
 
+function countHits() {
+  const scene = document.querySelector('a-scene');
+  let comboBar = document.querySelector('#combo-bar');
+  let scoreBar = document.querySelector('#score-bar');
+  let scoreFinishBarText = document.querySelector('#score-bar-finish-text');
+  let colorChangingBox = document.querySelector('#comboIndecator');
+
+  hitCounter++;
+  scoreCounter += hitCounter * 100;
+  if (hitCounter < 10) {
+    const currentScale = comboBar.getAttribute('scale');
+    const newXScale = parseFloat(currentScale.x) + 0.2;
+    changeScale(comboBar, newXScale);
+    attributeNumber = `#number${hitCounter}`;
+  } else if (hitCounter == 10 && !turretAnimationTriggered) {
+    turretRedAnimation();
+    clearInterval(blueTargetSpawnInterval);
+    scene.setAttribute('spawn-red-targets', '');
+    redTurretShootingInteval = setInterval(turretRedShooting, 4700);
+    turretAnimationTriggered = true;
+    attributeNumber = `#number${hitCounter}`;
+    hitCounter = 0;
+  } else {
+    attributeNumber = `#number${hitCounter}`;
+    hitCounter = 0;
+  }
+  if (hitCounter % 5 == 0) {
+    health += 10;
+    animateColorChange(colorChangingBox, 3, 1000);
+    changeScale(comboBar, 0);
+  }
+  scoreBar.setAttribute('text', {
+    value: `${scoreCounter}`,
+  });
+  scoreFinishBarText.setAttribute('text', {
+    value: `${scoreCounter}`,
+  });
+}
+
 function turretRedShooting() {
   const scene = document.querySelector('a-scene');
   const turretRed = document.querySelector('#shootingSpotRed');
   const comboBar = document.querySelector('#combo-bar');
-  const scoreBar = document.querySelector('#score-bar');
-  const scoreFinishBarText = document.querySelector('#score-bar-finish-text');
-  const colorChangingBox = document.querySelector('#comboIndecator');
   const laserShootSound = document.querySelector('#redLaserShootSound');
   const laserReloadSound = document.querySelector('#redLaserReloadSound');
   const velocity = 30;
@@ -167,31 +203,7 @@ function turretRedShooting() {
     const target = intersects[0].object.el;
 
     if (target.id.startsWith('redTarget')) {
-      hitCounter++;
-      scoreCounter += hitCounter * 100;
-      if (hitCounter < 10) {
-        const currentScale = comboBar.getAttribute('scale');
-        const newXScale = parseFloat(currentScale.x) + 0.2;
-        changeScale(comboBar, newXScale);
-        attributeNumber = `#number${hitCounter}`;
-      } else if (hitCounter == 10) {
-        attributeNumber = `#number${hitCounter}`;
-        hitCounter = 0;
-      } else {
-        attributeNumber = `#number${hitCounter}`;
-        hitCounter = 0;
-      }
-      if (hitCounter % 5 == 0) {
-        health += 10;
-        animateColorChange(colorChangingBox, 3, 1000);
-        changeScale(comboBar, 0);
-      }
-      scoreBar.setAttribute('text', {
-        value: `${scoreCounter}`,
-      });
-      scoreFinishBarText.setAttribute('text', {
-        value: `${scoreCounter}`,
-      });
+      countHits();
       const number = document.createElement('a-entity');
 
       const targetPosition = new THREE.Vector3();
@@ -287,9 +299,6 @@ function turretRedShooting() {
 function turretBlueShooting() {
   const scene = document.querySelector('a-scene');
   const comboBar = document.querySelector('#combo-bar');
-  const scoreBar = document.querySelector('#score-bar');
-  const scoreFinishBarText = document.querySelector('#score-bar-finish-text');
-  const colorChangingBox = document.querySelector('#comboIndecator');
   const velocity = 40;
 
   const camera = document.querySelector('a-camera');
@@ -349,38 +358,7 @@ function turretBlueShooting() {
     const target = intersects[0].object.el;
 
     if (target.id.startsWith('blueTarget')) {
-      hitCounter++;
-      scoreCounter += hitCounter * 100;
-      if (hitCounter < 10) {
-        const currentScale = comboBar.getAttribute('scale');
-        const newXScale = parseFloat(currentScale.x) + 0.2;
-        changeScale(comboBar, newXScale);
-        attributeNumber = `#number${hitCounter}`;
-      } else if (hitCounter == 10 && !turretAnimationTriggered) {
-        turretRedAnimation();
-        clearInterval(blueTargetSpawnInterval);
-        scene.setAttribute('spawn-red-targets', '');
-        redTurretShootingInteval = setInterval(turretRedShooting, 4700);
-        turretAnimationTriggered = true;
-        attributeNumber = `#number${hitCounter}`;
-        hitCounter = 0;
-      } else {
-        attributeNumber = `#number${hitCounter}`;
-        hitCounter = 0;
-      }
-      if (hitCounter % 5 == 0) {
-        health += 10;
-        animateColorChange(colorChangingBox, 3, 1000);
-        changeScale(comboBar, 0);
-      }
-
-      scoreBar.setAttribute('text', {
-        value: `${scoreCounter}`,
-      });
-      scoreFinishBarText.setAttribute('text', {
-        value: `${scoreCounter}`,
-      });
-
+      countHits();
       const number = document.createElement('a-entity');
 
       const targetPosition = new THREE.Vector3();
@@ -456,6 +434,7 @@ function turretBlueShooting() {
       changeScale(comboBar, 0);
       console.log('Попали не в ту мишень');
     } else if (target.id.startsWith('boss')) {
+      countHits();
       hitBoss();
       const targetPosition = new THREE.Vector3();
       target.object3D.getWorldPosition(targetPosition);

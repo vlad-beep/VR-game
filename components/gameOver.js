@@ -4,6 +4,7 @@ function gameOver() {
   const startButton = document.querySelector('#startButton');
   const startButtonText = document.querySelector('#startButtonText');
   const scoreFinishBar = document.querySelector('#score-bar-finish');
+  const healthBarContainer = document.querySelector('#health-bar-container');
   let bossSound = document.querySelector('#bossSound');
   bossSound.components.sound.stopSound();
   let Soundtrack = document.querySelector('#Soundtrack');
@@ -18,6 +19,7 @@ function gameOver() {
   clearInterval(redTargetSpawnInterval);
   scene.removeAttribute('spawn-blue-targets');
   scene.removeAttribute('spawn-red-targets');
+  scene.removeAttribute('spawn-boss');
   scene.removeAttribute('spawn-hp');
   scene.removeAttribute('bullet');
 
@@ -25,13 +27,14 @@ function gameOver() {
     turretRedGameOverAnimation();
     turretBlueGameOverAnimation();
   }, 1000);
-
+  healthBarContainer.style.display = 'none';
   const targets = scene.querySelectorAll('[data-raycastable]');
   targets.forEach((target) => {
     scene.removeChild(target);
   });
   health = maxHealth;
   scoreCounter = 0;
+
   gameOver.setAttribute('visible', 'true');
   gameOver.setAttribute('animation__move', {
     property: 'position',

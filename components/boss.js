@@ -1,9 +1,10 @@
 function bossAppearance() {
-  if (scoreCounter > 15000 && !bossTriggered) {
+  if (scoreCounter > 10000 && !bossTriggered) {
     const scene = document.querySelector('a-scene');
     const healthBar = document.querySelector('#health-bar-container');
     healthBar.style.display = 'block';
     healthPercentage = 100;
+    updateHealthBar(healthPercentage);
     bossTriggered = true;
     let Soundtrack = document.querySelector('#Soundtrack');
     Soundtrack.components.sound.stopSound();
@@ -43,9 +44,9 @@ function bossAppearance() {
 function updateHealthBar(healthPercentage) {
   const healthBarContainer = document.querySelector('#health-bar-container');
   const healthBar = document.querySelector('#health-bar');
+  const gameOverBar = document.querySelector('#gameOver');
   const scene = document.querySelector('a-scene');
   if (healthPercentage <= 0) {
-    console.log('rggrgrgr');
     healthBar.style.width = 0 + '%';
     healthBarContainer.style.display = 'none';
     scene.removeAttribute('spawn-boss');
@@ -53,6 +54,7 @@ function updateHealthBar(healthPercentage) {
     targets.forEach((target) => {
       scene.removeChild(target);
       gameOver();
+      gameOverBar.setAttribute('text', { value: 'YOU WON' });
     });
   } else {
     healthBar.style.width = healthPercentage + '%';
@@ -67,7 +69,6 @@ function hitBoss() {
 AFRAME.registerComponent('spawn-boss', {
   init: function () {
     const scene = this.el;
-    console.log('boss added');
     function spawnBoss() {
       const boss = document.createElement('a-entity');
       boss.setAttribute('position', {
@@ -145,7 +146,7 @@ AFRAME.registerComponent('boss-look-at-player', {
     };
 
     // Викликаємо функцію для відстеження гравця та обертання боса кожні 100 мілісекунд (10 разів на секунду).
-    this.intervalId = setInterval(lookAtPlayer, 200);
+    this.intervalId = setInterval(lookAtPlayer, 400);
   },
 
   remove: function () {
